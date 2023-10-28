@@ -1,0 +1,78 @@
+IComparable:
+------------
+Comparable → can be Compared.
+
+using System.Collections;
+namespace program
+{
+   class Temperature
+   {
+      private int temp;
+      public int Temp => temp;
+      public Temperature(int temp) => this.temp = temp;
+
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         List<Temperature> temps = new List<Temperature>();
+         Random random = new Random();
+         for (int i = 0; i < 20; i++)
+         {
+            temps.Add(new Temperature(random.Next(-10, 45)));
+         }
+         temps.Sort();
+         foreach (var item in temps)
+         {
+            System.Console.WriteLine(item.Temp);
+         }
+      }
+   }
+}
+// this code will throw an Exception "System.InvalidOperationException: Failed to compare two elements in the array."
+---------------------------------------------------------------------------------------------------------------------
+So, you must implement the IComparable:
+---------------------------------------
+
+using System.Collections;
+namespace program
+{
+   class Temperature : IComparable
+   {
+      private int temp;
+      public int Temp => temp;
+      public Temperature(int temp) => this.temp = temp;
+
+      public int CompareTo(object? obj)
+      {
+         if (obj is null)
+         {
+            return 1;
+         }
+         Temperature? temperature = obj as Temperature;
+         if (temperature is null)
+         {
+            throw new ArgumentException();
+         }
+         return this.temp.CompareTo(temperature.temp);
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         List<Temperature> temps = new List<Temperature>();
+         Random random = new Random();
+         for (int i = 0; i < 20; i++)
+         {
+            temps.Add(new Temperature(random.Next(-10, 45)));
+         }
+         temps.Sort();
+         foreach (var item in temps)
+         {
+            System.Console.WriteLine(item.Temp);
+         }
+      }
+   }
+}

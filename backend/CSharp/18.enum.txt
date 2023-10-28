@@ -1,0 +1,31 @@
+→ enum is strongly typed named constants
+
+→ enum is value type
+
+→ default datatype is int
+
+→ if you want to specify another datatype:
+
+enum Month : long
+{
+    ...
+}
+
+types of enum: 
+
+1.simple enum 
+
+enum Name
+{
+    ...
+}
+
+
+2.flags enum
+
+if you want to search in enum:
+
+Enum.Parse(typeof(enum_name), search_name)
+
+Enum.TryParse(search_name, out enum_name name)
+

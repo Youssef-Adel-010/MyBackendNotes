@@ -1,0 +1,14 @@
+→ Watch IDisposable again..
+-----------------------------
+Stream → As a Stream of bytes
+-----------------------------
+1. Back Store: 
+   1. File Stream
+   2. Network Stream
+2. Adapters:
+   1. StreamReader
+   2. StreamWriter
+3. Decorator
+   1. DeflateStream
+
+============================================

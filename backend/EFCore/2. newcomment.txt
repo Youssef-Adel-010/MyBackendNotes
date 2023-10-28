@@ -1,0 +1,389 @@
+How to tell efcore that the table will be a domain model?
+---------------------------------------------------------
+1. using DbSet<type> { get; set; }
+
+2. using Navigation Property
+
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+      public List<Course>? Course { get; set; }
+   }
+}
+namespace EFCore
+{
+   class Course
+   {
+      public int CourseId { get; set; }
+      public string? EmployeeCourse { get; set; }
+
+      public Employee? Employee{ get; set; }
+   }
+}
+
+   - take care when using Navigation Property
+   onDelete: ReferentialAction.(action_to_take_when_deleting_the_parent)     
+
+
+constraints: table =>
+{
+    table.PrimaryKey("PK_Course", x => x.CourseId);
+    table.ForeignKey(
+        name: "FK_Course_Employees_EmployeeId",
+        column: x => x.EmployeeId,
+        principalTable: "Employees",
+        principalColumn: "EmployeeId",
+        onDelete: ReferentialAction.Restrict);
+};
+
+   - actions → Restrict → must remove the child before parent.
+   -         → Cascade → when removing parent all children will be removed.
+
+3. using OnModelCreating(ModelBuilder modelBuilder);
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Course>();
+}
+
+---------------------------------------------------------------------------------------------
+How to tell efcore that the table will be excluded?
+
+1. using data annotation
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+
+      [NotMapped]
+      public List<Course>? Course { get; set; }
+   }
+}
+namespace EFCore
+{
+   class Course
+   {
+      public int CourseId { get; set; }
+      public string? EmployeeCourse { get; set; }
+      public Employee? Employee{ get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Ignore<Course>();
+}
+
+3. To exclude the table from migrations
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .ToTable("Employee", x => x.ExcludeFromMigrations());
+}
+---------------------------------------------------------------------------------------------
+How to change the table name?
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   [Table("Hamada")]
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+      public List<Course>? Course { get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .ToTable("Hamada");
+}
+---------------------------------------------------------------------------------------------
+How to change the Schema?
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   [Table("Hamada", Schema = "Company")]
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+      public List<Course>? Course { get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .ToTable("Hamada", schema: "Company");
+}
+
+3. to make the default schema??
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.HasDefaultSchema("Company");
+}
+
+4. how to map a domain model with views?
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .ToView("Hamada", schema: "Company");
+}
+---------------------------------------------------------------------------------------------
+How to tell efcore that the Property will be excluded?
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+
+      [NotMapped]
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+      public List<Course>? Course { get; set; }
+   }
+}
+
+2. using fluent API
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>().Ignore(x => x.Name);
+}
+---------------------------------------------------------------------------------------------
+How to change the column name?
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+
+      [Column("EmployeeName")]
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.Name)
+   .HasColumnName("EmployeeName");
+}
+---------------------------------------------------------------------------------------------
+How to change the column datatype?
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+
+      [Column(TypeName = "varchar(200)")]
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>(x => 
+   {
+      x.Property(x => x.Name)
+      .HasColumnName("EmployeeName")
+      .HasColumnType("varchar(200)");
+      
+      x.Property(x => x.Salary)
+      .HasColumnName("EmployeeSalary")
+      .HasColumnType("decimal(5, 2)");
+   });
+}
+---------------------------------------------------------------------------------------------
+using System.ComponentModel.DataAnnotations;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+
+      [MaxLength(200)]
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+   }
+}
+
+
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.Name)
+   .HasMaxLength(200);
+}
+---------------------------------------------------------------------------------------------
+using Microsoft.EntityFrameworkCore;
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+
+      [Comment("This is a comment")]
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+   }
+}
+
+
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.Name)
+   .HasComment("This is a comment");
+}
+---------------------------------------------------------------------------------------------
+How to make Primary Key??
+
+using System.ComponentModel.DataAnnotations;
+namespace EFCore
+{
+   class Employee
+   {
+      [Key]
+      public int EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public int Salary { get; set; }
+   }
+}
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .HasKey(x => x.EmployeeId);
+}
+
+How To change PrimaryKey name??
+- just with fluent api
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .HasKey(x => x.EmployeeId)
+   .HasName("PK_Employee");
+}
+---------------------------------------------------------------------------------------------
+How to make composite Key??
+- only with fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .HasKey(x => new { x.EmployeeId, x.Name });
+}
+---------------------------------------------------------------------------------------------
+How to Set HasDefaultValue() and HasDefaultValueSql()??
+- only with fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.Salary)
+
+   .HasDefaultValue(5000);
+}
+---------------------------------------------------------------------------------------------
+creating computed columns:
+--------------------------
+namespace EFCore
+{
+   class Employee
+   {
+      public int EmployeeId { get; set; }
+      public string? FirstName { get; set; }
+      public string? LastName { get; set; }
+      public string? FullName { get; set; }
+   }
+}
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.Name)
+   .IsRequired()
+   .HasMaxLength(20);
+
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.LastName)
+   .IsRequired()
+   .HasMaxLength(20);
+
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.FullName)
+   .HasComputedColumnSql("[Name] + ' ' + [LastName]");
+   
+}
+---------------------------------------------------------------------------------------------
+how to set Primary Key default value??
+- the problem is that when you know that the table will be small, you can you [byte] instead of [int]
+- here the generator will not make it identity (auto generated) but will replace it by the default value of byte (0)
+- so you must specify that it will be identity, how??
+
+1. using DataAnnotations
+
+using System.ComponentModel.DataAnnotations.Schema;
+namespace EFCore
+{
+   class Employee
+   {
+      [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+      public byte EmployeeId { get; set; }
+      public string? Name { get; set; }
+      public string? LastName { get; set; }
+      public string? FullName { get; set; }
+   }
+}
+
+2. using fluent API
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Employee>()
+   .Property(x => x.EmployeeId)
+   .ValueGeneratedOnAdd();
+}
+---------------------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+value type:
+  - address and its content in stack
+  - int, float, double, char..
+refrence type:
+  - address in stack and its content in heap
+  - string, array, class
+=================================================
+string cancatination:
+s3 = s1 + s2;
+string interpolation:
+s3 = $"{s1} {s2}";
+
+int x = 100_000_000;
+=================================================
+var keyword:
+  - the datatype is resolved at compile time. 
+  - the type of first value will be the var type, and you can't change it later.
+  - but what if I want to give this type?
+    var f = 0f; // this is float
+    var l = 0l; // this is long	
+
+dynamic keyword:
+  - Represents an object whose operations will be resolved at runtime.
+  - but what if I want to give this type?
+    dynamic f = 0f; // this is float
+    dynamic l = 0l; // this is long	
+=================================================
+expression → is any thing the can be evaluated in one value. 
+^ → xor
+=================================================
+short circuit:
+  - && || is short circuit
+  - it means not to continue when you reach what you want
+  - bool x = true || anything(); // it will not go to anything()
+  - bool x = true | anything(); // it will go to check anything()
+=================================================

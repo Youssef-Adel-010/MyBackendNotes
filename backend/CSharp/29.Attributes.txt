@@ -1,0 +1,206 @@
+What and Why??
+--------------
+Attributes → provides a way to add metadata to c# element.
+very useful in ASP.NET validation.
+===================================================================================================================
+1. add the attribute in a square brackets above the declaration.
+2. attributes can take parameters like the methods.
+3. all attributes uses the name "Attribute" after the naming of the attribute class.
+4. Attributes are assigned in assembly at compile time, but can be used and accessed at runtime using reflection.
+===================================================================================================================
+===================================================================================================================
+namespace program
+{
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Update[] update =
+         {
+            new Update(1, "Security Update"),
+            new Update(2, "UI enhancement"),
+            new Update(3, "Bugs Fixes"),
+         };
+         UpdateProcessor.Download(update);
+         UpdateProcessor.Install(update);
+      }
+   }
+   class Update
+   {
+      private int num;
+      private string title;
+      public Update(int num, string title)
+      {
+         this.num = num;
+         this.title = title;
+      }
+      public override string ToString()
+      {
+         return $"{num} - {title}";
+      }
+   }
+   class UpdateProcessor
+   {
+      public static void Download(Update[] updates)
+      {
+         for (int i = 0; i < updates.Length; i++)
+         {
+            System.Console.WriteLine($"Downloading {updates[i]}");
+            Thread.Sleep(750);
+         }
+      }
+      public static void Install(Update[] updates)
+      {
+         for (int i = 0; i < updates.Length; i++)
+         {
+            System.Console.WriteLine($"Installing {updates[i]}");
+            Thread.Sleep(750);
+         }
+      }
+   }
+}
+// But we need to add an update, we will combine functions Update() and Install()
+// we will use Obsolete attribute
+===================================================================================================================
+===================================================================================================================
+namespace program
+{
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Update[] update =
+         {
+            new Update(1, "Security Update"),
+            new Update(2, "UI enhancement"),
+            new Update(3, "Bugs Fixes"),
+         };
+         // UpdateProcessor.Download(update);
+         // UpdateProcessor.Install(update);
+         UpdateProcessor.UpdateAndInstall(update);
+      }
+   }
+   class Update
+   {
+      private int num;
+      private string title;
+      public Update(int num, string title)
+      {
+         this.num = num;
+         this.title = title;
+      }
+      public override string ToString()
+      {
+         return $"{num} - {title}";
+      }
+   }
+   class UpdateProcessor
+   {
+      [Obsolete("This will not be supported in next version", false)] // if true will give error, false gives a warning
+      public static void Download(Update[] updates)
+      {
+         for (int i = 0; i < updates.Length; i++)
+         {
+            System.Console.WriteLine($"Downloading {updates[i]}");
+            Thread.Sleep(750);
+         }
+      }
+      
+      [Obsolete("This will not be supported in next version", false)]
+      public static void Install(Update[] updates)
+      {
+         for (int i = 0; i < updates.Length; i++)
+         {
+            System.Console.WriteLine($"Installing {updates[i]}");
+            Thread.Sleep(750);
+         }
+      }
+      public static void UpdateAndInstall(Update[] updates)
+      {
+         for (int i = 0; i < updates.Length; i++)
+         {
+            System.Console.WriteLine($"Downloading {updates[i]}");
+            Thread.Sleep(750);
+            System.Console.WriteLine($"Installing {updates[i]}");
+            Thread.Sleep(750);
+         }
+      }
+
+   }
+}
+===================================================================================================================
+===================================================================================================================
+Custom Attribute:
+-----------------
+namespace program
+{
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         List<Player> players = new()
+         {
+            new("Ronaldo", 9, 18, 4, 85, 990),
+            new("Messi", 9, 18, 4, 78, 980),
+            new("Neymar",  7, 16, 4, 85, 1010),
+         };
+
+      }
+   }
+   class Player
+   {
+      public string? Name { get; set; }
+
+      [Skill(nameof(Control), 1, 20)]
+      public int Control { get; set; }
+
+      [Skill(nameof(Dribble), 1, 20)]
+      public int Dribble { get; set; }
+
+      [Skill(nameof(Power), 1, 1000)]
+      public int Power { get; set; }
+
+      [Skill(nameof(Speed), 1, 100)]
+      public int Speed { get; set; }
+
+      [Skill(nameof(Pass), 1, 4)]
+      public int Pass { get; set; }
+      public Player(string? name, int control, int dribble, int power, int speed, int pass)
+      {
+         Name = name;
+         Control = control;
+         Dribble = dribble;
+         Power = power;
+         Speed = speed;
+         Pass = pass;
+      }
+   }
+   public class SkillAttribute : Attribute
+   {
+      public string? Name { get; private set; }
+      public int Min { get; private set; }
+      public int Max { get; private set; }
+      public SkillAttribute(string? name, int min, int max)
+      {
+         Name = name;
+         Min = min;
+         Max = max;
+      }
+      public bool IsValid(object obj)
+      {
+         int skill = (int)obj;
+         return skill >= Min && skill <= Max;
+      }
+   }
+}
+===================================================================================================================
+===================================================================================================================
+Usage Attribute:
+----------------
+→ This Custom attribute cannot be used with classes, so we use [UsageAttribute]
+→ we add attribute on the attribute.
+→ AttributeUsage is a flag enum.
+
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
+===================================================================================================================

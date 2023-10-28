@@ -1,0 +1,56 @@
+/*
+ALter table:
+------------
+( editing tables )
+
+columns adding:
+---------------
+alter table table_name
+add name data_type constraints,
+    ... , 
+	... ,
+	... ;
+
+------------------------------------------------
+
+columns modifying:
+------------------
+alter table table_name
+alter column column_name ndata_type nconstraints;
+
+------------------------------------------------
+
+columns deleting:
+-----------------
+alter table table_name
+drop column column_name;
+
+------------------------------------------------
+
+constraints adding:
+-------------------
+alter table table_name
+add constraint cons_name constraint(column)
+
+------------------------------------------------
+
+constraints deleting:
+-------------------
+alter table table_name
+drop constraint cons_name;
+
+------------------------------------------------
+
+renaming table:
+---------------
+EXEC sp_rename 'old_name', 'new_name';
+
+------------------------------------------------
+
+renaming columns:
+-----------------
+EXEC sp_rename 'table_name.old_name', 'new_name', 'COLUMN';
+
+------------------------------------------------
+
+*/

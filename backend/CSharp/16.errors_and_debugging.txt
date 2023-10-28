@@ -1,0 +1,19 @@
+→ Errors: 
+1. Syntax Error
+2. Runtime Error
+3. Logical Error
+
+→ how to handle the error?
+
+try
+{
+    // test this code
+}
+catch(Exception ex)
+{
+    // if Exception run this code
+}
+finally
+{
+    // if Exception or not Exception run this code
+}

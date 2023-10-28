@@ -1,0 +1,33 @@
+Concatenation:
+--------------
+you can Concatenate anything:
+-----------------------------
+   int[] arr1 = { 1, 2, 3, 4, 5, 6 };
+   int[] arr2 = { 1, 2, 3, 4, 5, 6, 7 };
+   var arr3 = arr1.Concat(arr2);
+-----------------------------------------------------------------
+   Employee[] e1 =
+   {
+      new ("youssef", "IT", 5000),
+      new ("ayman", "HR", 6000),
+      new ("hamada", "CS", 8000),
+      new ("hagar", "HR", 1000)
+   };
+   Employee[] e2 =
+   {
+      new ("mohammed", "IT", 5000),
+      new ("sondos", "HR", 7000),
+      new ("adel", "IT", 3500),
+      new ("shahd", "CS", 2500)
+   };
+
+
+   var e3 = e1.Select(e => e.Name).Concat(e2.Select(e => e.Name));
+
+   foreach (var item in e3)
+   {
+      System.Console.Write(item + " ");
+   }
+   //youssef ayman hamada hagar mohammed sondos adel shahd 
+
+-----------------------------------------------------------------

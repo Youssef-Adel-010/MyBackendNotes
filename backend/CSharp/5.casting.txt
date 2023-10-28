@@ -1,0 +1,71 @@
+Object class → the root of any thing in .net
+Int32 → int 
+Int16 → short
+Int64 → long
+int, short, long are alias 
+
+C# → Strongly typed Language
+===============================================
+===============================================
+
+Implicit casting → is the conversion between data types without saying
+explicit casting → is the conversion between data types by saying it explicitly
+int x = 5;
+long y = (long)x; 
+
+===============================================
+===============================================
+
+Boxing and UnBoxing :
+---------------------------
+Boxing → Conveting from value type to refrence type
+UnBoxing → Conveting from refrence type to value type
+Boxing done implicitly
+UnBoxing done explicitly
+--------------------------------
+Object obj;
+int x = 10;
+obj = x; // done implicitly
+--------------------------------
+Object obj;
+int x;
+x = (int)obj; //done explicitly
+
+===============================================
+===============================================
+
+Converting from string to numbers:
+-----------------------------------
+with Parse():
+-------------
+string str = "100000";
+int x = int.Parse(str); // x = 100000
+
+----------------------------------------
+
+string str = "abc100000";
+int x = int.Parse(str); // error 
+
+----------------------------------------
+
+string str = "9999999999999999999999999999";
+int x = int.Parse(str); // error 
+
+----------------------------------------
+So, we have TryParse():
+------------------------
+
+if(TryParse(str, out int x))
+{
+   ...
+} // means if it true, add the output to x
+
+----------------------------------------
+
+with Convert Class:
+-------------------
+→ The same thing with the same errors, But performance goes to Parsing.
+→ In Both you will need to use TryParse().
+
+===============================================
+===============================================

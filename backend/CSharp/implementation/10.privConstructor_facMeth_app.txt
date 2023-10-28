@@ -1,0 +1,39 @@
+namespace program
+{
+   class Employee
+   {
+      private readonly string name;
+      private readonly int age;
+      public static int methodCallCount = 0;
+
+      private Employee(string name, int age)
+      {
+         this.name = name;
+         this.age = age;
+      }
+
+      public static Employee Create(string name, int age)
+      {
+         methodCallCount++;
+         return new Employee(name, age);
+      }
+
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Employee e1 = Employee.Create("Joe", 21);
+         Employee e2 = Employee.Create("Joe", 21);
+         Employee e3 = Employee.Create("Joe", 21);
+         Employee e4 = Employee.Create("Joe", 21);
+         Employee e5 = Employee.Create("Joe", 21);
+         Employee e6 = Employee.Create("Joe", 21);
+         Employee e7 = Employee.Create("Joe", 21);
+         Employee e8 = Employee.Create("Joe", 21);
+
+         Console.WriteLine($"Number Of Objects Made From The Class: {Employee.methodCallCount}");
+         Console.ReadKey();
+      }
+   }
+}

@@ -1,0 +1,11 @@
+Aggregate functions:
+--------------------
+Aggregate()
+
+Count(), LongCount()
+
+MaxBy(), Min()
+
+Sum()
+
+Average()

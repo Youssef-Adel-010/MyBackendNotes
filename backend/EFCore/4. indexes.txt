@@ -1,0 +1,66 @@
+by default efcore make an index in the Foreign keys
+how to make your own??
+
+[Index(nameof(Title))]
+public class Post
+{
+   public string? Title { get; set; }
+   public string? Content { get; set; }
+}
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => x.Title);
+}
+=============================================================================
+composite index:
+
+[Index(nameof(Title), nameof(Content))]
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => new { x.Title , x.Content });
+}
+ 
+=============================================================================
+unique
+[Index(nameof(Title), IsUnique = true)]
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => new { x.Title , x.Content })
+      .IsUnique();
+}
+
+=============================================================================
+Naming:
+
+[Index(nameof(Title), IsUnique = true, Name = "hamada")]
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => new { x.Title , x.Content })
+      .HasDatabaseName("hamada");
+}
+
+=============================================================================
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => x.Title)
+      .HasFilter("[Title] IS NOT NULL");
+}
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+      .HasIndex(x => x.Title)
+      .IsUnique()
+      .HasFilter(null);
+}
+
+=============================================================================
+

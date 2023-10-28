@@ -1,0 +1,43 @@
+quantifiers → return bool:
+--------------------------
+Any()
+-----
+→ check if only one that matches the condition.
+→ any one matches??
+→ O(n)
+   
+   int[] nums = { 1, 6, 9, 3, 9, 3, 6, 3, 8, 4, 57, 8, 3 };
+   bool res = nums.Any(x => x > 10); // True
+
+   string[] str = { "youssef", "yasser", "Yomna", "mohammed", "Yousra" };
+   bool res = str.Any(x => x.StartsWith("Y", StringComparison.OrdinalIgnoreCase)); // True
+
+-----------------------------------------------------------------------------------------------
+
+All()
+-----
+→ check if all members matches the condition.
+→ all matches??
+→ O(n)
+
+   int[] nums = { 1, 6, 9, 3, 9, 3, 6, 3, 8, 4, 57, 8, 3 };
+   bool res = nums.All(x => x > 10); // False
+   
+   string[] str = { "youssef", "yasser", "Yomna", "mohammed", "Yousra" };
+   bool res = str.All(x => x.StartsWith("Y", StringComparison.OrdinalIgnoreCase)); // False
+
+-----------------------------------------------------------------------------------------------
+
+Contains()
+----------
+→ can be O(1) with hashmap.
+→ can be O(n) with others.
+→ can be instance method or extension method.
+
+   int[] nums = { 1, 6, 9, 3, 9, 3, 6, 3, 8, 4, 57, 8, 3 };
+
+   string s = "youssef";
+   bool q1 = s.Contains("y"); // instance
+   bool res = nums.Contains(10); // extension
+
+-----------------------------------------------------------------------------------------------

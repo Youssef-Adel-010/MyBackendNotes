@@ -1,0 +1,23 @@
+Data Seeding → is to add data to the table on creation
+
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+      .HasData(
+         new Blog { BlogId = 1, Url = "www.facebook.com" },
+         new Blog { BlogId = 2, Url = "www.instagram.com" },
+         new Blog { BlogId = 3, Url = "www.linkedin.com" });
+}
+
+it is better to make an external data seeding method
+
+public static void DataSeeding()
+{
+   using AppDbContext context = new();
+   context.Database.EnsureCreated();
+   Blog? blog = context?.Blogs?.FirstOrDefault(x => x.Url == "www.google.com");
+
+   if (blog is null)
+      context?.Blogs?.Add(new Blog { Url = "www.google.com" });
+}

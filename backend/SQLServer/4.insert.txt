@@ -1,0 +1,68 @@
+/*
+INSERT INTO table_name(columns_name)
+VALUES ('...');
+*/
+
+
+INSERT INTO sales.stores(store_name, email, street, city)
+OUTPUT inserted.city
+VALUES('max', 'youssef@gmail.com', 'faisel', 'giza'), 
+      ('moon', 'ayman@gmail.com', 'shobra', 'cairo'),
+      ('nooo', 'mohammed@gmail.com', 'quesna', 'alex'),
+      ('omg', 'hoda@gmail.com', 'sharqya', 'fayoum'),
+      ('fsociety', 'sollla@gmail.com', 'zamalek', 'assiut')
+
+SELECT * FROM sales.stores;
+
+======================================================================
+======================================================================
+
+/*
+ALTER → is moifying the table structure 
+UPTADE → is moifying the data in the table
+*/
+
+SELECT * FROM sales.stores;
+
+
+UPDATE sales.stores
+set phone = '01288150232',
+	zip_code = 1953,
+	state = 'london'
+where store_id = 2 or store_id = 3;
+
+======================================================================
+======================================================================
+
+SELECT * FROM sales.stores;
+
+DELETE FROM sales.stores -- deletes the entire table
+
+DELETE TOP(2) FROM sales.stores
+
+DELETE TOP(10) PERCENT FROM sales.stores
+
+DELETE FROM sales.stores 
+WHERE store_id BETWEEN 3 and 5;
+
+
+======================================================================
+======================================================================
+
+SELECT * FROM sales.stores;
+
+DELETE FROM sales.stores -- deletes the entire table
+
+DELETE TOP(2) FROM sales.stores
+
+DELETE TOP(10) PERCENT FROM sales.stores
+
+DELETE FROM sales.stores 
+WHERE store_id BETWEEN 3 and 5;
+
+======================================================================
+======================================================================
+
+
+
+

@@ -1,0 +1,41 @@
+→ properties → promotes Encapsulation.
+
+→ the private field that is used with property is called backing field.
+
+→ Always use properties, for reflection.
+
+→ properties is a public way to access private fields.
+
+→ public {sameDataType} {sameNameWithFirstUppercase}
+
+  get   // get for read only 
+  {
+    return ...;
+  }  
+  set   // set for Write only 
+  {
+    ... = value;
+  }
+
+
+→ you can have a block of code for validation in get and set (if, else ...)
+
+→ you can make a property without a backing field using automatic property.
+
+→ Expression bodied property → if you have only a return (getter) you can do the following:
+  
+  public int Age => age;
+
+→ If a regular property use automatic properties (Short Hand) :
+
+ public string Name { get; set; }
+
+→ If a return only use expression-bodied property :
+
+ public int Name => name;
+
+→ you can initialize the property → public int Name {get; set;} = 100;
+
+→ the property will automatically be converted into getter and setter methods like java.
+ 
+→ the property is a getter function or setter function with a parameter called [value] or both.

@@ -1,0 +1,74 @@
+→ operator overloading → means to use user defined operator to overload a predefined operator.
+
+supported operators:
+→ Arithmetic operator
+→ comparison operator
+→ Boolean operator
+
+
+→ Binary operator → operator that needs 2 variables
+→ unary operator → operator that needs 1 variable
+
+→ if you defined a comparison operator, you must define the opposite
+=========================================================================
+=========================================================================
+
+using System.Numerics;
+
+namespace program
+{
+   class Money
+   {
+      private int value;
+      public Money(int value)
+      {
+         this.value = value;
+      }
+      public override string ToString()
+      {
+         return this.value.ToString();
+      }
+      public override bool Equals(object? obj)
+      {
+         if (obj is null || obj is not Money)
+            return false;
+         Money? money = obj as Money; 
+         return this.value > money?.value;
+      }
+      public override int GetHashCode()
+      {
+         return base.GetHashCode();
+      }
+      public static Money operator +(Money m1, Money m2)
+      {
+         int res = m1.value + m2.value;
+         return new Money(res);
+      }
+      public static Money operator -(Money m1, Money m2)
+      {
+         int res = m1.value - m2.value;
+         return new Money(res);
+      }
+      public static bool operator >(Money m1, Money m2)
+      {
+         return m1.value > m2.value;
+      }
+      public static bool operator <(Money m1, Money m2)
+      {
+         return m1.value < m2.value;
+      }
+      public static bool operator ==(Money m1, Money m2) => m2.Equals(m2);
+      public static bool operator !=(Money m1, Money m2) => !m2.Equals(m2);
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Money m1 = new Money(10);
+         Money m2 = new Money(20);
+         Money m3 = m1 + m2;
+         System.Console.WriteLine(m1==m2);
+
+      }
+   }
+}

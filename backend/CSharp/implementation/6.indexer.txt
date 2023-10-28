@@ -1,0 +1,29 @@
+namespace program
+{
+   class IP
+   {
+      private readonly int[] segments = new int[4];
+
+      // indexer
+      public int this[int index]
+      {
+         get { return segments[index]; }
+         set { segments[index] = value; }
+      }
+      public IP(int s1, int s2, int s3, int s4)
+      {
+         segments[0] = s1;
+         segments[1] = s2;
+         segments[2] = s3;
+         segments[3] = s4;
+      }
+
+      public void Print()
+      {
+         for (int i = 0; i < 4; i++)
+         {
+            Console.Write($"{segments[i]}.");
+         }
+      }
+   }
+}

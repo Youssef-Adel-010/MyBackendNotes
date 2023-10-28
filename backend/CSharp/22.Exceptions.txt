@@ -1,0 +1,90 @@
+→ Exceptions are in the [Exception] class → it is the super class of all c# exceptions.
+→ you can specify general exception [Exception] or specific exception [DivideByZeroException].
+→ you can add multiple catch, but add specific then general.
+=======================================================================================
+Dealing with Exception:
+--------------------------------
+1. Ducking (throwing) → throw new Exception()
+2. swallow →  to get the exception and continue the program by adding empty catch block.
+3. Handling
+=======================================================================================
+Handling the exception:
+-----------------------
+try
+{
+   // check this code.
+}
+catch
+{
+   // if exception, run this code.
+}
+finally
+{
+   // run this code at any condition.
+}
+---------------------------------------------
+try
+{
+   // check this code.
+}
+catch(Exception)
+{
+   // if exception, run this code.
+}
+finally
+{
+   // run this code at any condition.
+}
+=======================================================================================
+Exception Filter using when:
+----------------------------
+try
+{
+   // check this code.
+}
+catch(DivideByZeroException ex) when(ex.Source == "csharp")
+{
+   // if exception, run this code.
+}
+finally
+{
+   // run this code at any condition.
+}
+=============================================================
+Custom Exception:
+-----------------
+namespace program
+{
+   class MyDivideByZeroException : Exception
+   { 
+      public MyDivideByZeroException(string message) : base(message) { }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         int x, y;
+         x = Convert.ToInt32(Console.ReadLine());
+         y = Convert.ToInt32(Console.ReadLine());
+
+         try
+         {
+            int z = x / y;
+         }
+         catch (DivideByZeroException)
+         {
+            throw new MyDivideByZeroException("Cant Do this fucken division");
+         }
+      }
+   }
+}
+=============================================================
+making a delay:
+---------------
+System.Threading.Thread.Sleep(400);
+
+to make a random:
+-----------------
+Random x = new Random();
+x.Next(1, 5);
+=============================================================

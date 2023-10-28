@@ -1,0 +1,4 @@
+Join Operations:
+----------------
+Join()
+GroupJoin()

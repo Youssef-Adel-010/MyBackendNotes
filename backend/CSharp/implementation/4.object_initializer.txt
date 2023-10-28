@@ -1,0 +1,49 @@
+using System.Runtime.ExceptionServices;
+
+namespace program
+{
+   class Date
+   {
+      public const int DAYS = 365;
+      public int dayInDate;
+      public int monthInDate;
+      public int yearInDate;
+
+      public Date(int dayInDate, int monthInDate, int yearInDate)
+      {
+         this.dayInDate = dayInDate;
+         this.monthInDate = monthInDate;
+         this.yearInDate = yearInDate;
+      }
+
+      public Date() : this(12, 2, 2004) { }
+      public Date(int first) : this(first, 2, 2004) { }
+      public Date(int first, int second) : this(first, second, 2004) { }
+      public void printData()
+      {
+         Console.WriteLine($"{dayInDate.ToString().PadLeft(2, '0')}/{monthInDate.ToString().PadLeft(2, '0')}/{yearInDate.ToString().PadLeft(4, '0')}");
+      }
+
+   }
+   public class Program
+   {
+      public static void Main(string[] args)
+      {
+         Date d1 = new Date
+         {
+            dayInDate = 10,
+            monthInDate = 2,
+            yearInDate = 2023
+         };
+         d1.printData();
+
+         Date d2 = new Date(3, 3, 3030)
+         {
+            dayInDate = 10,
+            monthInDate = 2,
+            yearInDate = 2023
+         };
+         d1.printData();
+      }
+   }
+}

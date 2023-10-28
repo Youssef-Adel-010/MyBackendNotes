@@ -1,0 +1,36 @@
+→ finalizer or destructor → is a method inside the class used to destroy the instances of the class.
+
+→ the destructor is called when the object disposed (destroyed) from the memory.
+
+→ object flagged to be destroyed when reach the end of its scope.
+
+→ Garbage collection in .net → automatic memory management to clean memory.
+
+→ when the use of the object ends, the garbage collector puts it into the garbage.
+
+→ when the object is disposed?
+
+  implicit:
+  1.end of the program
+  2.memory full
+
+  explicit:
+  1. GC.Collect()
+
+===================================================================
+
+ class Person
+   {
+      public string? Name { get; set; }
+
+      public Person()
+      {
+         Console.WriteLine("This is constructor");
+      }
+
+      ~Person()
+      {
+         Console.WriteLine("This is a destructor");
+      }
+      
+   }

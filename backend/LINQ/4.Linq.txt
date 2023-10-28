@@ -1,0 +1,32 @@
+sorting:
+---------
+   int[] nums = { 17, 1, 9, 2, 6, 8, 2, 4, 8, 2, 7, 2, 9, 3, 9, 4, 5, 3, 6 };
+   string[] strings = { "youssef", "ahamada", "adel", "mohamed", "sobh" };
+
+   var q1 = nums.OrderBy(x => x).Distinct();
+   var q2 = strings.OrderByDescending(x => x.Length).ThenBy(x => x);
+   var q3 = strings.OrderBy(x => x.Length).ThenByDescending(x => x);
+
+        
+   foreach (var item in q2)
+   {
+      System.Console.Write(item + " ");
+   }
+
+------------------------------------------------------------------------------------
+Custom sorting:
+---------------
+→ you must inherit from IComparer.
+
+------------------------------------------------------------------------------------
+.Reverse()
+----------
+
+   int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+   IEnumerable<int> arrRev = arr.Reverse();
+
+   foreach (var item in arrRev)
+   {
+      System.Console.Write(item + " ");
+   }
+   // 9 8 7 6 5 4 3 2 1

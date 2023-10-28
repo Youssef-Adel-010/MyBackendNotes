@@ -1,0 +1,52 @@
+LINQ:
+-----
+LINQ → Language Integrated Query.
+----------------------------------------------------------------------------------------------------------------------
+Set of query operators (Extension method):
+------------------------------------------
+1. Used to generalizing the query of any data source.
+2. Type safe
+3. Query any local object that implements IEnumerable<T>
+4. Query remote data (IQueryable)
+----------------------------------------------------------------------------------------------------------------------
+how to write linq:
+------------------
+1. IEnumerable syntax
+2. Extension method syntax
+3. query syntax 
+EX:
+---
+List<int> list = new List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+var q1 = Enumerable.Where(list, x => x % 2 == 0);  // all will be converted to this
+var q2 = list.Where(x => x % 2 == 0);              // better when using anything else
+var q3 = from n in list where n % 2 == 0 select n; // better when using database
+
+→ you can query on query
+----------------------------------------------------------------------------------------------------------------------
+→ in most methods any operations you do to the list is taken until you iterate on the list.
+→ it is called lazy execution
+EX:
+---
+List<int> list = new List<int>{1, 2, 3, 4, 5, 6, 7, 8, 9};
+IEnumerable<int> query1 = list.Where(x => x % 2 == 0);
+
+list.Add(10);
+list.Add(15);
+list.Add(0);
+list.Remove(8);
+list.Remove(4);
+
+foreach (var item in query1)
+{
+   System.Console.Write(item + " ");
+}
+// output → 2 6 10 0 
+
+But why??
+---------
+1. when you use .Where() it will make object in memory called rapper (contains a reference and where decorator)
+2. it is a reference to the main object 
+3. so any modification to the main object will modify the result
+4. when iteration (execute query) it makes a new list and copy the result from the rapper.
+----------------------------------------------------------------------------------------------------------------------

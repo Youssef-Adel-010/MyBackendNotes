@@ -1,0 +1,24 @@
+use master;
+create database sales; -- it takes details from the model database.
+drop database sales;
+
+-- or you can use
+
+USE master ;
+GO
+CREATE DATABASE sales
+ON
+(
+	NAME = sales_data,
+	FILENAME = "E:\000\database\sales_data.mdf", -- .mdf
+	SIZE = 10,
+	MAXSIZE = 50,
+	FILEGROWTH = 5 )
+LOG ON
+(
+	NAME = sales_log,
+	FILENAME = "E:\000\database\sales_data.ldf", -- .ldf
+	SIZE = 5,
+	MAXSIZE = 25,
+	FILEGROWTH = 5 )
+GO

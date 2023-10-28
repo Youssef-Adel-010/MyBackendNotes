@@ -1,0 +1,118 @@
+Why??
+-----
+→ add methods to c# built in types,
+  In other words it is used to call a user-defined function with an instance of built in type.
+→ you can use the Extension Methods with the user-defined types but it is better to use in built in types.
+→ when you have extension method and instance method of the same class and with the same name
+  the instance will override
+==========================================================================================================
+Extension Method:
+-----------------------------------
+1. must be called by instance name.
+2. don't need parameter.
+3. must be static method in static class.
+4. [this] before the instance parameter
+5. must be first parameter.
+==========================================================================================================
+// using instance method
+namespace program
+{
+   public class DateTimeHelper
+   {
+      public static bool IsWeekend(DateTime dt)
+      {
+         return dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Friday;
+      }
+      public static bool IsNotWeekend(DateTime dt)
+      {
+         return !IsWeekend(dt);
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         // you need to make a method to know is this day a weekend or not, it isn't in the DateTime class.
+         DateTime dt = DateTime.Now;
+         System.Console.WriteLine(DateTimeHelper.IsWeekend(dt));
+         System.Console.WriteLine(DateTimeHelper.IsNotWeekend(dt));
+      }
+   }
+}
+==========================================================================
+// using Extension Methods
+namespace program
+{
+   public static class DateTimeExtension
+   {
+      public static bool IsWeekend(this DateTime dt)
+      {
+         return dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Friday;
+      }
+      public static bool IsNotWeekend(this DateTime dt)
+      {
+         return !IsWeekend(dt);
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         DateTime dt = DateTime.Now;
+
+         System.Console.WriteLine(dt.IsWeekend());
+         System.Console.WriteLine(dt.IsNotWeekend());
+         // or
+         System.Console.WriteLine(DateTimeExtension.IsWeekend(dt));
+         System.Console.WriteLine(DateTimeExtension.IsWeekend(dt)                                                                                                                                   );
+
+      }
+   }
+}
+==========================================================================
+Method Chaining:
+----------------
+→ Method chaining in C# is a programming technique that allows you to call
+  multiple methods on an object in a single line of code by chaining the method
+  calls together. This can make your code more concise and readable, especially
+  when you need to perform a series of operations on an object.
+
+→ To enable method chaining, each method in the chain typically returns
+  the object itself (or a new object of the same type), so that you can 
+  continue calling methods on the returned object.This works because C# allows 
+  you to invoke methods on the result of a method call.
+==========================================================================
+public class Calculator
+{
+   private int result;
+   public Calculator Add(int number)
+   {
+      result += number;
+      return this;
+   }
+   public Calculator Subtract(int number)
+   {
+      result -= number;
+      return this;
+   }
+   public int GetResult()
+   {
+      return result;
+   }
+}
+class Program
+{
+   static void Main(string[] args)
+   {
+      Calculator calculator = new Calculator();
+
+      calculator
+      .Add(5)
+      .Subtract(3)
+      .Add(10);
+
+      int finalResult = calculator.GetResult();
+      Console.WriteLine("Final Result: " + finalResult); // Output: Final Result: 12
+   }
+}
+==========================================================================

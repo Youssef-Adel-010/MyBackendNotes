@@ -1,0 +1,109 @@
+-----------------------------------------
+IEnumerable, IEnumerator and IComparable:
+-----------------------------------------
+→ I → Interface
+→ Enumerable → can be counted
+→ Enumerator → counter
+------------------------------------------------------
+To treat the class as it is iterative [like array], must implement IEnumerable and IEnumerator:
+-----------------------------------------------------------------------------------------------
+1. implement the IEnumerable
+2. implement IEnumerable → GetEnumerator() {return new Enumerator(this)}
+3. Make the class Enumerator and implement IEnumerator → Current, MoveNext(), Reset()
+
+This Process Will Be Like:
+--------------------------
+using System.Collections;
+namespace program
+{
+   class FiveIntegers : IEnumerable // 1
+   {
+      private int[] values;
+      public FiveIntegers(int n1, int n2, int n3, int n4, int n5)
+      {
+         this.values = new int[] { n1, n2, n3, n4, n5 };
+      }
+      public IEnumerator GetEnumerator() // 2
+      {
+         return new Enumerator(this);
+      }
+      private class Enumerator : IEnumerator // 3
+      {
+         private int index = -1;
+         FiveIntegers integers;
+         public Enumerator(FiveIntegers five)
+         {
+            this.integers = five;
+         }
+         public object Current
+         {
+            get
+            {
+               if (index == -1 || index == integers.values.Length)
+                  throw new InvalidOperationException("Enumeration Index Invalid");
+               return integers.values[index];
+            }
+         }
+
+         public bool MoveNext()
+         {
+            if (index >= integers.values.Length - 1)
+               return false;
+            return ++index < integers.values.Length;
+         }
+         public void Reset() => index = -1;
+
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         FiveIntegers five = new FiveIntegers(1, 2, 3, 4, 5);
+         foreach (var item in five)
+         {
+            System.Console.WriteLine(item);
+         }
+
+      }
+   }
+}
+===========================================================================================
+[yield] keyword:
+----------------
+yield → is a keyword that does all the state machine instead of doing it manually.
+
+// you don't have to make the Enumerator class
+using System.Collections;
+namespace program
+{
+   class FiveIntegers : IEnumerable // 1
+   {
+      private int[] values;
+      public FiveIntegers(int n1, int n2, int n3, int n4, int n5)
+      {
+         this.values = new int[] { n1, n2, n3, n4, n5 };
+      }
+      public IEnumerator GetEnumerator() // 2
+      {
+         foreach (var item in values)
+         {
+            yield return item;
+         }
+      }
+
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         FiveIntegers five = new FiveIntegers(1, 2, 3, 4, 5);
+         foreach (var item in five)
+         {
+            System.Console.WriteLine(item);
+         }
+
+      }
+   }
+}
+===========================================================================================

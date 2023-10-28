@@ -1,0 +1,11 @@
+Collections:
+------------
+✔ List
+✔ Dictionary
+✔ Stack
+✔ Queue
+✔ Linked List
+✔ HashSet
+✔ SortedSet
+✔ SortedList
+-----------------------------------

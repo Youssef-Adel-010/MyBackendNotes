@@ -1,0 +1,250 @@
+one to one relationship → means unique one record to unique one record
+
+{Principal Entity (Parent)}
+public class Blog
+{
+   public int Id { get; set; }
+   public string? Url { get; set; }
+   public BlogImage? BlogImage { get; set; }
+}
+
+{Dependent Entity (child)}
+public class BlogImage
+{
+   public int Id { get; set; }
+   public string? Image { get; set; }
+   public string? Caption { get; set; }
+   public int BlogId { get; set; }
+   public Blog? Blog { get; set; }
+}
+How to tell efcore who is the parent and who is the child:
+
+{data annotation}
+public class BlogImage
+{
+   public int Id { get; set; }
+   public string? Image { get; set; }
+   public string? Caption { get; set; }
+   public int BlogForeignKey { get; set; }
+
+   [ForeignKey("BlogForeignKey")]
+   public Blog? Blog { get; set; }
+}
+
+{fluent api}
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+   .HasOne(x => x.BlogImage)
+   .WithOne(x => x.Blog)
+   .HasForeignKey<BlogImage>(x => x.BlogForeignKey);
+}
+
+===================================================================================
+
+one to many relationship:
+
+Principal Entity
+Principal Key (Principal Primary Key)
+
+Dependent Entity 
+Dependent Key (Dependent Primary Key)
+
+Foreign Key
+Collection Navigation Property
+Reference Navigation Property
+
+what does "Navigation" mean?? → if you are in a table you can access the data in another table.
+if you removed the Foreign Key, efcore will understand and will make "shadow Foreign key" 
+if you removed the Navigation Property, efcore will understand and will make the same result
+but here you will have a single Navigation Property (you can access in one way)
+
+public class Blog  // Principal Entity
+{
+   public int BlogId { get; set; }      // Principal Key
+   public string? Url { get; set; }
+   public List<Post>? Posts { get; set; } // Collection Navigation Property
+   
+}
+public class Post  //Dependent Entity 
+{
+
+   public int PostId { get; set; }
+   public string? Title { get; set; }
+   public string? Content { get; set; }
+   public int BlogId { get; set; }        // Foreign Key // if we removed this
+   public Blog? Blog { get; set; }        // Reference Navigation Property // then this
+
+}
+
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+   .HasMany(x => x.Posts)
+   .WithOne(x => x.Blog); // .WithOne()
+
+   // or
+   modelBuilder.Entity<Post>()
+   .HasOne(x => x.Blog)
+   .WithMany(x => x.Posts);
+} 
+
+what if I don't have the Navigation Property
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+   .HasMany<Post>()
+   .WithOne()
+   .HasForeignKey(x => x.BlogId)
+   .HasConstraintName("My_Constraint_Name"); 
+   
+}
+===================================================================================
+
+How to Use another column as a Principal key
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+   .HasMany<Post>()
+   .WithOne()
+   .HasForeignKey(x => x.BlogId)
+   .HasPrincipleKey(x => x.Url)
+   .HasConstraintName("My_Constraint_Name"); 
+   
+}
+
+How to Use composite key → by the anonymous object
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Blog>()
+   .HasMany<Post>()
+   .WithOne()
+   .HasForeignKey(x => x.BlogId)
+   .HasPrincipalKey(x => new { x.BlogId, x.Url })
+   .HasConstraintName("My_Constraint_Name"); 
+   
+}
+
+===================================================================================
+
+many to many relationship:
+To represent a many-to-many relationship, you typically use a junction table 
+(also known as an associative or link table) that links the two related tables.
+
+you can make the relationship without making the third table. but it is preferred to make it
+
+public class Post
+{
+   public int PostId { get; set; }
+   public string? Title { get; set; }
+   public string? Content { get; set; }
+   public List<Tag>? Tags { get; set; }
+   
+}
+
+public class Tag
+{
+   public int TagId { get; set; }
+   public List<Post>? Posts { get; set; }
+}
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+   .HasMany(x => x.Tags)
+   .WithMany(x => x.Posts)
+   .UsingEntity(x => x.ToTable("PostTagsTest")) ;
+}
+// efcore automatically created the third table called "PostTag"
+
+migrationBuilder.CreateTable(
+name: "PostTag",
+columns: table => new
+{
+    PostsPostId = table.Column<int>(type: "int", nullable: false),
+    TagsTagId = table.Column<int>(type: "int", nullable: false)
+},
+constraints: table =>
+{
+    table.PrimaryKey("PK_PostTag", x => new { x.PostsPostId, x.TagsTagId });
+    table.ForeignKey(
+        name: "FK_PostTag_Posts_PostsPostId",
+        column: x => x.PostsPostId,
+        principalTable: "Posts",
+        principalColumn: "PostId",
+        onDelete: ReferentialAction.Cascade);
+    table.ForeignKey(
+        name: "FK_PostTag_Tag_TagsTagId",
+        column: x => x.TagsTagId,
+        principalTable: "Tag",
+        principalColumn: "TagId",
+        onDelete: ReferentialAction.Cascade);
+});
+
+but if you want to make the junction table??
+public class Post
+{
+   public int PostId { get; set; }
+   public string? Title { get; set; }
+   public string? Content { get; set; }
+   public ICollection<Tag>? Tags { get; set; }
+   public List<PostTag>? PostTags { get; set; }
+}
+public class Tag
+{
+   public int TagId { get; set; }
+   public ICollection<Post>? Posts { get; set; }
+   public List<PostTag>? PostTags { get; set; }
+}
+public class PostTag
+{
+   public int PostId { get; set; }
+   public int TagId { get; set; }
+   public Post? Post { get; set; }
+   public Tag? Tag { get; set; }
+}
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.Entity<Post>()
+   .HasMany(x => x.Tags)
+   .WithMany(x => x.Posts)
+   .UsingEntity<PostTag>(
+   // here we defined the two implicit one to many relations
+      x => x
+            .HasOne(x => x.Tag)
+            .WithMany(x => x.PostTags)
+            .HasForeignKey(x => x.TagId),
+
+      x => x
+            .HasOne(x => x.Post)
+            .WithMany(x => x.PostTags)
+            .HasForeignKey(x => x.PostId)
+      
+      x => x.HasKey(x => new { x.PostId, x.TagId })
+      
+   );
+}
+
+indirect many to many relationship
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+
+   modelBuilder.Entity<PostTag>()
+      .HasKey(x => new { x.PostId, x.TagId });
+
+   modelBuilder.Entity<PostTag>()
+      .HasOne(x => x.Post)
+      .WithMany(x => x.PostTags)
+      .HasForeignKey(x => x.PostId);
+
+   modelBuilder.Entity<PostTag>()
+     .HasOne(x => x.Tag)
+     .WithMany(x => x.PostTags)
+     .HasForeignKey(x => x.TagId);
+
+}

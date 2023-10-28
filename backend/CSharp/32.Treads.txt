@@ -1,0 +1,7 @@
+Thread:
+------
+Sequential sync → same Thread run with different processors.
+By default there is a single Thread.
+But how to create Threads??
+===============================================================
+Thread.Sleep(ms) → pause the execution of the current Thread for a time in millisecond.

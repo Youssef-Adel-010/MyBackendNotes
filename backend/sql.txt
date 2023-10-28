@@ -1,0 +1,10 @@
+sql
+-----
+LEN()
+SUBSTRING('', , )
+SQL_VARIANT_PROPERTY(..., 'BaseType')
+JOIN
+UNION
+GROUP BY .. HAVING 
+
+notice → WHERE for columns, HAVING for groups

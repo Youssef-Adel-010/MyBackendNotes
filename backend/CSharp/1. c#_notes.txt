@@ -1,0 +1,10 @@
+c# notes:
+=========
+in compilation → in obj
+in run → in bin
+solution includes projects 
+project varies over languages (c, cpp, c#, f#,...).
+project varies over type (class, library, console app, web app, api,...).
+compatapility → the same framework for all project in the solution.
+only one main method - at the same project -
+application → means there is interaction with the user.

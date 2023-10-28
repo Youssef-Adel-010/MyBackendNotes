@@ -1,0 +1,16 @@
+- array is refrence type.
+- if you will use object initializer in declaring the array, you must - Explicitly Defining Data Type -
+=======================================================
+int[] x = new int[10];
+int[,] y = new int[3, 5];
+int[][] z = new int[][]
+{
+   new int[5],
+   new int[5],
+};
+we can consider the jagged array as a multi dimentional array but with better performance.
+=======================================================
+slicing:
+arr[from..to]
+arr[from..^to] // to the to's from the end.
+=======================================================

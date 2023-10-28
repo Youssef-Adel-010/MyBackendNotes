@@ -1,0 +1,18 @@
+→ the event enable class or object to notify other classes or objects when something occurs.
+
+→ Firing or raising event → means publishing event.
+
+→ publisher is the class that contain and fire the event.
+
+→ subscriber is the class that is considered in the event or uses the event.
+
+→ How to Use Events?
+   
+   1. define a handler delegate with parameters (object_of_the_publisher, the_thing_before_changing).
+   2. define the event of datatype delegate.
+   3. raising or firing the event:
+      - go to the place the event changed, and after the changing make sure there is subscriber.
+      - if true give the parameters to the event 
+   4. how to subscribe??
+      - go to the subscriber and make → even_name += method_to_call_when_the_event_happens
+   5. define this method with parameters exactly like delegate.

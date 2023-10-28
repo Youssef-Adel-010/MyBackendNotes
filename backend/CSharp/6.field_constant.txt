@@ -1,0 +1,22 @@
+→ access modifiers for class are → internal and public
+
+→ default access modifier of class is (internal).
+
+→ object is called instance for the class
+
+→ to call a const must be called by class name.
+
+→ You can call fields with object but constants mut use class name.
+
+→ Class is reference type, The object saved in stack and the value saved in heap.
+
+→ You can make array of class type
+  example:
+  ---------
+  Employee[] arr = new Employee[10]; // making array of 1
+  objects
+  Employee e1 = new Employee();
+  e1.name = "ahmed";
+  e1.age = 26;
+  e1 = arr[0];
+  // and so on..

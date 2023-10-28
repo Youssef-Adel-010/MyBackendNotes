@@ -1,0 +1,17 @@
+Grouping Data:
+--------------
+GroupBy()
+
+1. uses Deferred execution → means that it will not be executed until you iterate
+2. each iterate → group again
+3. return IEnumerable<IGrouping<TKey>, TSource>
+
+ToLookup()
+
+1. uses immediate execution.
+2. buffer the result in memory
+3. return ILookup<TKey>, TSource>
+
+use GroupBy() when executing one time.
+use ToLookup() when executing multiple times or cycling.
+

@@ -1,0 +1,74 @@
+namespace program
+{
+   class Employee
+   {
+      public const double TAX = 0.03;
+      public static double WaGES = 0.05;
+      public string? Fname;
+      public string? Lname;
+      public string? Phone;
+      private int age;
+      private int salary;
+
+      // Read Data by constructor
+      public Employee(string Fname, string Lname, string Phone, int age, int salary)
+      {
+         this.Fname = Fname;
+         this.Lname = Lname;
+         this.Phone = Phone;
+         this.age = age;
+         this.salary = salary;
+      }
+
+      // Initializing constructor data
+      public Employee(string Fname, string Lname) : this(Fname, Lname, "01288150232", 20, 5000) { }
+      public Employee(string Fname) : this(Fname, "Adel", "01288150232", 20, 5000) { }
+
+
+      // Method
+      public void PrintData1()
+      {
+         System.Console.WriteLine($"fname: {Fname}\nlname: {Lname}\nphone: {Phone}\nage: {age}\nsalary: {salary}");
+      }
+      // Expression bodied method
+      public string PrintData2() => $"fname: {Fname}\nlname: {Lname}\nphone: {Phone}\nage: {age}\nsalary: {salary}";
+
+
+      // getter and setter for age and salary to do a validation
+      public int Age
+      {
+         get { return age; }
+         set
+         {
+            // validation
+            if (value > 60 || value < 18)
+            {
+               Console.WriteLine("This age is not supported");
+            }
+            else
+            {
+               age = value;
+            }
+         }
+      }
+      public int Salary
+      {
+         get { return salary; }
+         set
+         {
+            if (value <= 2000)
+               value += 2000;
+            salary = value;
+         }
+      }
+      // Expression bodied property
+      public int Age2 => age;
+
+      // Automatic, short-hand property
+      public int Salary2 { get; set; }
+
+      // Initializing property
+      public int Age3 { get; set; } = 50;
+
+   }
+}

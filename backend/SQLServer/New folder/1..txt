@@ -1,0 +1,93 @@
+→ Database Normalization → is the process of organizing data in a database, This includes creating tables and establishing relationships between those tables according
+  to rules designed both to protect the data and to make the database more flexible by eliminating redundancy and inconsistent dependency.
+
+
+→ first to make nirmalization form is setting the primary key.
+
+
+→ how to set the primary key?
+  1- super key → all compinations = ( 2^n - 1 ) 
+  2- candidate key → proper subset od the super key
+  3- primary key → one of the primary keys its value != null
+
+
+→ row = record = tuple
+→ column = attribute = field
+
+→ Every attribute of the candidate key is called → prime attribute
+→ Every attribute not in the candidate key is called → non-prime attribute
+→ All keys remaining after choosing the primary key is called → alternate key
+→ foregin key → is a key its values is subset of the primary key
+
+
+=======================================================================================
+
+
+1st Normal Form (1nf):
+----------------------
+1- Relation must have primary key
+2- Domain value preserved → means that each column has the same domain (all are nums, or chars, or emails, or phones....)
+3- Every column have atomic value → means that it can't be devided into more columns (look at the 1st normal photo).
+
+→ how can you make the column atomic? 
+ you can decompose the column, instead of one you can make 3 columns
+ but you will have alot of null, editing the desing isn't easy and when you search you will search in 3 columns.
+
+→ so we will make a new table of foregin keys and the devided column.
+
+→ composite key → combination of multiple columns.
+
+=======================================================================================
+
+
+2nd Normal Form (2nf):
+----------------------
+1- 1st Normal Form
+2- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

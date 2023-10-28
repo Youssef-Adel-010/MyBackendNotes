@@ -1,0 +1,78 @@
+when naming fields in c#:
+-------------------------
+public field → DayInMonth
+private filed → dayInMonth  or  _dayInMonth 
+
+====================================================
+
+→ how to use PadLeft() ?
+  int x = 0001; // will print 1
+  cw(x.ToString().PadLeft(3, '0'));
+
+====================================================
+
+implicit constructor → is a default empty constructor that is exist by default in any class.
+
+====================================================
+
+readonly → is a keyword you add to make in impossible to modify the field, unless inside the constructor only.
+
+==================================================== 
+
+→ constructors can be overloaded.
+
+====================================================
+constructor initializer:
+------------------------
+
+public Employee(string name, int age)
+{
+  this.name = name;
+  this.age = age;
+}
+public Employee(string name) : this(name, 1) { }
+
+==================================================== 
+object initializer :
+--------------------
+Employee e1 = new Employee
+{
+   name = "youssef",
+   Id = 000
+};
+
+----------------------------------
+
+Employee e1 = new Employee (x, y)  // if there is a constructor
+{
+   name = "youssef",
+   Id = 000,
+};
+
+====================================================
+Private constructor and factory method:
+----------------------------------------
+
+→ Private constructor → is to make it impossible to create an object outside the class.
+→ factory method is the method which is used to make an object.
+
+we can use it to count how many Objects Made From The Class.
+   private Employee(int x)
+   { }
+   public Employee Factory(int x) 
+   {
+      return new Employee2(x);
+   }
+
+   Employee e = Employee.Factory();
+====================================================
+primary constructor:
+--------------------
+
+class Employee(string? name, int salary, string department)
+{
+   private readonly string? name = name;
+   private readonly int salary = salary;
+   private readonly string? department = department;
+}
+====================================================

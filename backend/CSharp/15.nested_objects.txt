@@ -1,0 +1,3 @@
+Nested Type → is to make a class inside a class to make avoid.
+
+Composite Type → is to add object of a class inside another class

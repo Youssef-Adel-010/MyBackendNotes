@@ -1,0 +1,38 @@
+→ concrete type is the opposite of abstract
+→ when declaring the object:
+  abs_or_concrete obj_name = new must_be_conc();
+=====================================================================================
+→ The interface is abstract class with some differences:
+--------------------------------------------------------
+  1. interface is contract → means any class or struct that implements the interface must provide implementation of the members defined in the interface
+  2. interface don't have fields.
+  3. interface don't have constructor.
+  4. all members of the interface are abstract by default, cannot have a body.
+  5. the class can inherit only one class, but can implement multiple interfaces.
+
+=====================================================================================
+implement the interface implicitly and explicitly:
+-------------------------------------------------
+  // implicitly
+  class aaa : Iaaa
+  {
+    void method()
+    {
+      ...
+    }
+  }
+ 
+  // explicitly
+  class aaa : Iaaa
+  {
+    void Iaaa.method()
+    {
+	    ...
+    }
+  }
+=====================================================================================
+
+→ Tight Coupling → is the coupling based on concrete.
+→ loose Coupling → is the coupling based on abstraction.
+
+=====================================================================================

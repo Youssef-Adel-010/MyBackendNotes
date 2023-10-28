@@ -1,0 +1,35 @@
+namespace program
+{
+   public class Employee
+   {
+      public const double TAX = 0.03;
+      public string? fname;
+      public string? lname;
+      public int salary;
+      public string? phone;
+   }
+   public class Program
+   {
+      public static void Main(string[] args)
+      {
+         Employee[] em = new Employee[1];
+
+         for (int i = 0; i < 1; i++)
+         {
+            em[i] = new Employee();
+            em[i].fname = Console.ReadLine();
+            em[i].lname = Console.ReadLine();
+            em[i].phone = Console.ReadLine();
+            em[i].salary = Convert.ToInt32(Console.ReadLine());
+         }
+         foreach (var item in em)
+         {
+            Console.WriteLine($"NAME: {item.fname} {item.lname}");
+            Console.WriteLine($"phone: {item.phone}");
+            Console.WriteLine($"salary: {item.salary}");
+            Console.WriteLine($"tax: {Employee.TAX}");
+            Console.WriteLine("==============================");
+         }
+      }
+   }
+}

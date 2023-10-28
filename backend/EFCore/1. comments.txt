@@ -1,0 +1,102 @@
+some commands:
+--------------
+- dotnet tool install --global dotnet-ef
+- dotnet tool update --global dotnet-ef
+- dotnet ef migrations add InitialCreate
+- dotnet ef database update
+- dotnet ef migrations list
+- dotnet ef migrations remove
+- dotnet ef database update 0
+- dotnet add package package_name
+----------------------------------------------
+- install packages
+   - Microsoft.EntityFrameworkCore
+   - Microsoft.EntityFrameworkCore.SqlServer
+   - Microsoft.EntityFrameworkCore.Tools
+   - Microsoft.Extensions.Configuration
+   - Microsoft.Extensions.Configuration.json
+
+- make folder "Data"
+- inside "Data" make file "AppDbContext.cs"
+
+- make folder "Entities" or "Model"
+- inside "Entities" make file "Entity.cs" which is the domain model and "appsettings.json"
+
+- AppDbContext inherit from DbContext
+- inside AppDbContext must override 
+   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+   {
+      IConfigurationRoot config = new ConfigurationBuilder()
+      .AddJsonFile(@"E:\000\EntityFrameworkCore\Entities\appsettings.json")
+      .Build();
+      string? constr = config.GetSection("constr").Value;
+      optionsBuilder.UseSqlServer(constr);
+   }
+- make the entity class
+
+- make migrations 
+dotnet ef migrations add InitialCreate
+
+- update database
+dotnet ef database update
+
+
+- the class is the table, and the objects is the records of the table
+- we deal with domain models just like list (Add(), ....)
+
+- __EFMigrationsHistory is a table that has a row of every migration you did 
+
+- AppDbContextModelSnapshot.cs is the file that has a history for all migration you did 
+- so, never delete the migration by yourself
+dotnet ef migrations remove
+
+- migration has already been applied, how to get revert to the point you want
+dotnet ef database update migration_name_you_want_to_get_back_to
+
+- go back for migration zero
+dotnet ef database update 0
+
+
+- how to make a predefined data? make your own migration
+dotnet ef migrations add MyMigration
+
+======================================================================================
+
+how to make the field required??
+1. using System.ComponentModel.DataAnnotations;
+      
+      [Required]
+      public string? Url { get; set; }
+
+
+2. Fluent API
+   - override OnModelCreating(ModelBuilder modelBuilder)
+      protected override void OnModelCreating(ModelBuilder modelBuilder)
+      {
+         modelBuilder.Entity<Blog>()
+         .Property(x => x.Url)
+         .IsRequired();
+      }
+   
+   - in fluent API you can make your code more clean by adding the configs to external file
+     1. create a folder "Configurations" 
+     2. inside "Configurations" create a file "BlogEntityTypeConfiguration"
+     3. implement interface " IEntityTypeConfiguration<Blog>" and its method "Configure(EntityTypeBuilder<Blog> builder)"
+   
+   public class BlogEntityTypeConfigurations : IEntityTypeConfiguration<Blog>
+   {
+      public void Configure(EntityTypeBuilder<Blog> builder)
+      {
+         builder.Property(x => x.Url).IsRequired();
+      }
+   }
+   
+   protected override void OnModelCreating(ModelBuilder modelBuilder)
+   {     
+      // EmployeeEntityTypeConfiguration configuration = new();
+      // configuration.Configure(modelBuilder.Entity<Employee>());
+      new EmployeeEntityTypeConfiguration()
+      .Configure(modelBuilder.Entity<Employee>());
+   }
+
+======================================================================================

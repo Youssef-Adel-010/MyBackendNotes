@@ -1,0 +1,47 @@
+→ const member → is a shared variable that can't be changed after initializing.
+
+→ static member → is a shared variable that can be changed after initializing.
+
+→ static and const is used by class name only.
+
+→ static member can only be used in static member.
+
+→ static and const are stored in - High Frequency Heap -
+ 
+→ High Frequency Heap → small storage but fast.
+
+==================================================================================
+
+→ Instance method → called by object.
+
+→ Static method → called by class.
+
+→ Pass by value → sending a copy, not the real variable.
+
+→ Pass by reference → sending the real variable, by using ref or out.
+
+→ What is the difference between ref and out ? // *imp*
+
+  ref → the variable must be initialized in the main.
+  out → the variable must be initialized in the method.
+
+==================================================================================
+
+method signature and overloading: 
+---------------------------------
+method signature → (name → param type → param order)	
+
+method overloading → is a common way to implement the polymorphism.
+
+==================================================================================
+
+→ if you have only one statement and this statement is a return, use the expression-bodied method.
+
+→ expression-bodied method → consists of a single expression that returns a value.
+  
+  public bool IsEven (int x) => x % 2 == 0;
+
+==================================================================================
+
+→ Local methods → if you only used a method inside another one (only one reference), you can make it local only for this method.
+  (means to add a method inside a method).

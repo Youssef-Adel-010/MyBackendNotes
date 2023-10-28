@@ -1,0 +1,123 @@
+namespace program
+{
+   class Employee
+   {
+      public string Name { get; set; }
+      public int Salary { get; set; }
+      public Employee(string name, int salary)
+      {
+         Name = name;
+         Salary = salary;
+
+      }
+   }
+   class Report
+   {
+      public delegate bool Filter(int salary);
+      public static void EmployeeReport(Employee[] employees, string title, Filter filter)
+      {
+         System.Console.WriteLine(title + ":");
+         foreach (Employee employee in employees)
+         {
+            if (filter(employee.Salary))
+            {
+               System.Console.WriteLine($"{employee.Name}: {employee.Salary}");
+            }
+         }
+         System.Console.WriteLine("=================================");
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Employee[] employee = new Employee[]
+         {
+            new Employee("youssef", 5000),
+            new Employee("ayman", 1000),
+            new Employee("hoda", 2000),
+            new Employee("salma", 4000),
+            new Employee("shahd", 7000),
+            new Employee("yasser", 8000),
+            new Employee("hamada", 3000),
+            new Employee("hagar", 9000)
+         };
+         Report.EmployeeReport(employee, "Less Than 5000", x => x > 5000);
+         Report.EmployeeReport(employee, "Greater Than 5000", x => x < 5000);
+         Report.EmployeeReport(employee, "Equal 5000", x => x == 5000);
+
+      }
+   }
+}
+======================================================================
+// regular method
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", LessThan5000);
+report.PrintReport(employee, "Greater Than 5000", GreaterThan5000);
+report.PrintReport(employee, "Equal 5000", Equal5000);
+
+static bool LessThan5000(Employee e) => e.Sales < 5000; 
+static bool GreaterThan5000(Employee e) => e.Sales > 5000; 
+static bool Equal5000(Employee e) => e.Sales == 5000; 
+====================================================================================================
+// Anonymous delegate
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", delegate (Employee e) { return e.Sales < 5000; });
+report.PrintReport(employee, "Greater Than 5000", delegate (Employee e) { return e.Sales > 5000; });
+report.PrintReport(employee, "Equal 5000", delegate (Employee e) { return e.Sales == 5000; });
+
+====================================================================================================
+// Lambda Expression
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", (Employee e) => e.Sales < 5000);
+report.PrintReport(employee, "Greater Than 5000", (Employee e) => e.Sales > 5000);
+report.PrintReport(employee, "Equal 5000", (Employee e) => e.Sales == 5000);
+
+// since the delegate says I will get type Employee, you don't have to add the parameter type
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", e => e.Sales < 5000);
+report.PrintReport(employee, "Greater Than 5000", e => e.Sales > 5000);
+report.PrintReport(employee, "Equal 5000", e => e.Sales == 5000);
+====================================================================================================
+====================================================================================================
+multicast delegate → delegate points to multiple methods and call them together.
+--------------------------------------------------------------------------------
+namespace program
+{
+   public delegate void MathDelegate(int x, int y);
+   class Math
+   {
+      public void Add(int x, int y) =>
+         System.Console.WriteLine($"{x} + {y} = {x + y}");
+      public void Sub(int x, int y) =>
+         System.Console.WriteLine($"{x} - {y} = {x - y}");
+      public void Mul(int x, int y) =>
+   
+         System.Console.WriteLine($"{x} * {y} = {x * y}");
+   
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Math math = new Math();
+
+         MathDelegate mathDelegate = math.Add;
+         mathDelegate += math.Sub;
+         mathDelegate += math.Mul;
+
+         mathDelegate(5, 6);
+         /*
+         output:
+         5 + 6 = 11
+         5 - 6 = -1
+         5 * 6 = 30
+         */
+
+      }
+   }
+}

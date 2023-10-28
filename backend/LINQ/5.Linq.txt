@@ -1,0 +1,48 @@
+data partitioning:
+------------------
+   List<int> list = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+   var q1 = list.Skip(10);               // 11 12 13 14 15 
+   var q2 = list.SkipLast(10);           // 1 2 3 4 5 
+   var q3 = list.SkipWhile(x => x < 10); // 10 11 12 13 14 15 
+   var q4 = list.SkipWhile(x => x != 3); // 3 4 5 6 7 8 9 10 11 12 13 14 15 
+
+-----------------------------------------------------------------------------------------
+   
+   List<int> list = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+   var q1 = list.Take(10);                // 1 2 3 4 5 6 7 8 9 10 
+   var q2 = list.TakeWhile(x => x != 10); // 1 2 3 4 5 6 7 8 9 
+   var q3 = list.TakeLast(10);            // 6 7 8 9 10 11 12 13 14 15 
+
+-----------------------------------------------------------------------------------------
+
+   List<int> list = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+   var chunks = list.Chunk(3);
+
+   foreach (var chunk in chunks)
+   {
+      for (int i = 0; i < chunk.Length; i++)
+      {
+         System.Console.Write(chunk[i] + " ");
+      }
+      System.Console.WriteLine();
+   }
+   // 1 2 3
+   // 4 5 6
+   // 7 8 9
+   // 10 11 12
+   // 13 14 15
+
+-----------------------------------------------------------------------------------------
+
+   List<int> list = new() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+   var chunks = list.Chunk(3);
+   foreach (var chunk in chunks)
+   {
+      System.Console.WriteLine(string.Join(", ", chunk));
+   }
+-----------------------------------------------------------------------------------------
+Application:
+------------

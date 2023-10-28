@@ -1,0 +1,37 @@
+Element Operations:
+-------------------
+ElementAt()
+
+   var list1 = Enumerable.Range(1, 10);
+   var i = list1.ElementAt(0); // 1
+
+
+ElementAtOrDefault()
+
+   var list1 = Enumerable.Range(1, 10);
+   var i = list1.ElementAtOrDefault(0);
+
+
+First(), FirstOrDefault()
+
+   var i1 = list1.First(); // first element
+   var i2 = list1.First(x => x > 3); // first element that matches the condition
+   var i3 = list1.First(x => x > 1000); // System.InvalidOperationException
+   var i4 = list1.FirstOrDefault(x => x > 1000); // return the default value 0
+
+Last(), LastOrDefault()
+
+   var i1 = list1.Last(); // Last element
+   var i2 = list1.Last(x => x > 3); // Last element that matches the condition
+   //var i3 = list1.Last(x => x > 1000); // System.InvalidOperationException
+   var i4 = list1.LastOrDefault(x => x > 1000); // return the default value 0
+
+
+Single(), SingleOrDefault()
+
+   // Single and SingleOrDefault Gets only one element and if found more it throws System.InvalidOperationException
+        
+   var q1 = list1.Single(x => x == 3); // System.InvalidOperationException "Sequence contains more than one matching element"
+   var q2 = list1.SingleOrDefault(x => x == 3); // System.InvalidOperationException "Sequence contains more than one matching element"
+   var q3 = list1.Single(x => x == 100); // System.InvalidOperationException "Sequence contains no matching element"
+   var q4 = list1.SingleOrDefault(x => x == 100); // return default value 0

@@ -1,0 +1,68 @@
+projection → the operation of transforming an object to a new form that is going to be used.
+to:
+1. Construct a new type.
+2. project a new property.
+3. perform math operation.
+→ you can also use Linq with array 
+------------------------------------------------------------------------------------------------
+.Select()
+--------- 
+List<string> words = new() { "i", "love", "c", "sharp" };
+List<int> nums = new() { 1, 2, 4, 6, 7, 2, 7, 4, 1 };
+List<string> chars = new() { "1", "2", "5"};
+var q1 = words.Select(x => x); // did nothing
+var q2 = words.Select(x => x.ToUpper()); // in another form
+var q3 = words.Select(x => x.ToUpper()); // in another form
+var q4 = nums.Select(x => x * x / 2 + 1); // math operation
+var q5 = chars.Select(x => int.Parse(x)); // Converting from type to type
+------------------------------------------------------------------------------------------------
+.SelectMany()
+-------------
+var myList = new List<List<int>>
+{
+   new List<int>{ 1, 2, 3, 4, 5 },
+   new List<int>{ 1, 2, 3, 4, 5 },
+   new List<int>{ 1, 2, 4, 5, 5 }
+};
+var q1 = myList.SelectMany(list => list);
+var q2 =
+(
+   from list in myList
+   from num in list
+   select num
+).Distinct();
+
+foreach (var item in q1)
+{
+   System.Console.Write(item + " ");
+}
+// output → 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5
+------------------------------------------------------------------------------------------------
+.Zip()
+------
+   int[] arr1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+   int[] arr2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+   var q1 = arr1.Zip(arr2);
+
+   foreach (var item in q1)   
+   {
+      System.Console.Write(item + " ");
+   }
+   // (1, 1) (2, 2) (3, 3) (4, 4) (5, 5) (6, 6) (7, 7) (8, 8) (9, 9)
+
+
+   
+   int[] arr1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+   int[] arr2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+   int[] first = arr1[..3];
+   int[] second = arr2[^3..];
+
+   var q1 = first.Zip(second, (f, s) => $"{f} .. {s}");
+
+   foreach (var item in q1)
+   {
+      System.Console.WriteLine(item);
+   }
+   // 1 .. 7
+   // 2 .. 8
+   // 3 .. 9

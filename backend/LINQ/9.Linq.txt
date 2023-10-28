@@ -1,0 +1,25 @@
+Generation Operations:
+----------------------
+Empty(), DefaultIfEmpty(), Range(), Repeat()
+--------------------------------------------
+
+if you will initialize an empty IEnumerable and you will use it later
+
+var list1 = new List<int>(); 
+var list2 = Enumerable.Empty<int>(); // BETTER
+
+DefaultIfEmpty() 
+
+return the Default value if the type is empty.
+you can specify what is the Default
+
+System.Console.WriteLine(default(int));
+System.Console.WriteLine(default(double));
+System.Console.WriteLine(default(object));
+System.Console.WriteLine(default(string));
+
+DefaultIfEmpty(defaultVal) 
+
+Range(1, 10) → deferred execution
+
+Repeat("youssef", 10)

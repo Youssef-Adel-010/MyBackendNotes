@@ -1,0 +1,36 @@
+      // regular method
+      
+      Report report = new Report();
+      report.PrintReport(employee, "Less Than 5000", LessThan5000);
+      report.PrintReport(employee, "Greater Than 5000", GreaterThan5000);
+      report.PrintReport(employee, "Equal 5000", Equal5000);
+      
+      static bool LessThan5000(Employee e) => e.Sales < 5000; 
+      static bool GreaterThan5000(Employee e) => e.Sales > 5000; 
+      static bool Equal5000(Employee e) => e.Sales == 5000; 
+
+      ====================================================================================================
+
+      // Anonymous delegate
+      
+      Report report = new Report();
+      report.PrintReport(employee, "Less Than 5000", delegate (Employee e) { return e.Sales < 5000; });
+      report.PrintReport(employee, "Greater Than 5000", delegate (Employee e) { return e.Sales > 5000; });
+      report.PrintReport(employee, "Equal 5000", delegate (Employee e) { return e.Sales == 5000; });
+      
+      ====================================================================================================
+
+      // Lambda Expression
+      
+      Report report = new Report();
+      report.PrintReport(employee, "Less Than 5000", (Employee e) => e.Sales < 5000);
+      report.PrintReport(employee, "Greater Than 5000", (Employee e) => e.Sales > 5000);
+      report.PrintReport(employee, "Equal 5000", (Employee e) => e.Sales == 5000);
+
+      // since the delegate says I will get type Employee, you don't have to add the parameter type
+      
+      Report report = new Report();
+      report.PrintReport(employee, "Less Than 5000", e => e.Sales < 5000);
+      report.PrintReport(employee, "Greater Than 5000", e => e.Sales > 5000);
+      report.PrintReport(employee, "Equal 5000", e => e.Sales == 5000);
+

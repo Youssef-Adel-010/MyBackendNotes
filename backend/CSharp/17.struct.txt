@@ -1,0 +1,27 @@
+when declaring the object of type struct:
+-----------------------------------------
+   1. you don't have to use new.
+   2. if you have a field inside struct, you must initialize with object.
+   3. if you don't want to initialize the field use [new] keyword, then it will give the default value of int which is 0.
+
+**look at mutable and immutable again**
+
+you can make readonly struct, and all instances inside must be readonly
+the class doesn't have this feature.
+
+DateTime is a struct.
+
+All value data types are structs.
+
+when you type:
+
+int x = 4;
+x = x + 1;  // this is not the same x, it is another location in the memory
+
+----------------------------------------------------------------------------
+struct: 
+-------
+don't support destructor.
+don't support inheritance.
+don't recommended for large data.
+can't use anything inside struct without initializing all fields.

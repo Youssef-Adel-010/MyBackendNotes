@@ -1,0 +1,18 @@
+dotnet tool install --global dotnet-ef
+dotnet ef migrations add mig_name
+dotnet ef database update
+dotnet ef database update mig_name
+dotnet ef migrations remove
+dotnet ef migrations script
+dotnet ef migrations script mig_name
+dotnet ef migrations script mig_name_from mig_name_to
+dotnet ef migrations list
+
+dotnet add package Microsoft.EntityFrame workCore.Design
+
+dotnet ef dbcontext scaffold "conn_str" Database_Provider -O folder_name
+dotnet ef dbcontext scaffold "conn_str" Database_Provider table_one table_two 
+dotnet ef dbcontext scaffold "conn_str" Database_Provider -O folder_name
+
+
+dotnet ef dbcontext scaffold "string" Microsoft.EntityFrameworkCore.SqlServer -o Models --context MyContext --context-dir ContextFolder -d

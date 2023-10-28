@@ -1,0 +1,113 @@
+namespace program
+{
+   class Employee
+   {
+      public string? Name { get; set; }
+      public int Sales { get; set; }
+   }
+
+   class Report
+   {
+      public delegate bool Condition(Employee e);
+      public void PrintReport(Employee[] employees, string title, Condition condition)
+      {
+         System.Console.WriteLine(title + "\n------------------------");
+         foreach (var e in employees)
+         {
+            if (condition(e))
+            {
+               System.Console.WriteLine($"{e.Name} => {e.Sales}");
+            }
+         }
+         System.Console.WriteLine("\n==============================================\n");
+      }
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Employee[] employee = new Employee[]
+         {
+            new Employee{ Name = "ahmed", Sales = 1000 },
+            new Employee { Name = "ayman", Sales = 4000 },
+            new Employee { Name = "youssef", Sales = 8000 },
+            new Employee { Name = "salma", Sales = 6000 },
+            new Employee { Name = "yasser", Sales = 2000 },
+            new Employee { Name = "shahd", Sales = 5000 },
+            new Employee { Name = "adel", Sales = 3000 },
+            new Employee { Name = "hany", Sales = 7000 }
+         };
+         Report report = new Report();
+         report.PrintReport(employee, "Less Than 5000", e => e.Sales < 5000);
+         report.PrintReport(employee, "Greater Than 5000", e => e.Sales > 5000);
+         report.PrintReport(employee, "Equal 5000", e => e.Sales == 5000);
+      }
+      static bool LessThan5000(Employee e) => e.Sales < 5000;
+      static bool GreaterThan5000(Employee e) => e.Sales > 5000;
+      static bool Equal5000(Employee e) => e.Sales == 5000;
+   }
+}
+======================================================================
+multicast delegate → delegate points to multiple methods.
+
+namespace program
+{
+   public delegate void MathDelegate(int x, int y);
+   class Math
+   {
+      public void Add(int x, int y) =>
+         System.Console.WriteLine($"{x} + {y} = {x + y}");
+      public void Sub(int x, int y) =>
+         System.Console.WriteLine($"{x} - {y} = {x - y}");
+      public void Mul(int x, int y) =>
+   
+         System.Console.WriteLine($"{x} * {y} = {x * y}");
+   
+   }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         Math math = new Math();
+
+         MathDelegate mathDelegate = math.Add;
+         mathDelegate += math.Sub;
+         mathDelegate += math.Mul;
+
+         mathDelegate(5, 6);
+
+      }
+   }
+}
+======================================================================
+// regular method
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", LessThan5000);
+report.PrintReport(employee, "Greater Than 5000", GreaterThan5000);
+report.PrintReport(employee, "Equal 5000", Equal5000);
+
+static bool LessThan5000(Employee e) => e.Sales < 5000; 
+static bool GreaterThan5000(Employee e) => e.Sales > 5000; 
+static bool Equal5000(Employee e) => e.Sales == 5000; 
+====================================================================================================
+// Anonymous delegate
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", delegate (Employee e) { return e.Sales < 5000; });
+report.PrintReport(employee, "Greater Than 5000", delegate (Employee e) { return e.Sales > 5000; });
+report.PrintReport(employee, "Equal 5000", delegate (Employee e) { return e.Sales == 5000; });
+
+====================================================================================================
+// Lambda Expression
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", (Employee e) => e.Sales < 5000);
+report.PrintReport(employee, "Greater Than 5000", (Employee e) => e.Sales > 5000);
+report.PrintReport(employee, "Equal 5000", (Employee e) => e.Sales == 5000);
+// since the delegate says I will get type Employee, you don't have to add the parameter type
+
+Report report = new Report();
+report.PrintReport(employee, "Less Than 5000", e => e.Sales < 5000);
+report.PrintReport(employee, "Greater Than 5000", e => e.Sales > 5000);
+report.PrintReport(employee, "Equal 5000", e => e.Sales == 5000);

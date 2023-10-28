@@ -1,0 +1,7 @@
+Equality Operations:
+--------------------
+
+SequenceEqual()
+
+1. compares the count of two sequences.
+2. compares the correspondent elements.

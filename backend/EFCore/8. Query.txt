@@ -1,0 +1,141 @@
+AppDbContext context = new();
+List<Employee> employees1 = context.Employees.ToList();
+List<Employee> employees2 = [.. context.Employees];
+
+foreach (var employee in employees1)
+{
+   Console.WriteLine(employee.Name + " | " + employee.Salary);
+}
+=======================================================================
+
+// selecting one item from database
+AppDbContext context = new();
+
+Employee? e1 = context.Employees.Find(1); // find using pk
+
+Employee? e2 = context.Employees.Single(em => em.EmployeeId == 5); // select using a condition just return one and only one row 
+
+Employee? e3 = context.Employees.SingleOrDefault(em => em.EmployeeId == 1000); // just return one row or null
+
+Employee? e4 = context.Employees.First(); // select the first element
+
+Employee? e5 = context.Employees.First(em => em.Name == "Alice Brown"); // select using a condition first element
+
+Employee? e6 = context.Employees.FirstOrDefault(); // first element or null
+
+Employee? e7 = context.Employees.OrderBy(em => em.EmployeeId).Last(); // last element but must use OrderBy()
+
+Employee? e8 = context.Employees.OrderBy(em => em.EmployeeId).LastOrDefault(); // last element or null
+
+
+=======================================================================
+
+// EFCore filters the data in server side not in client side and send the filtered data.
+// selecting using .Where()
+
+AppDbContext context = new();
+List<Employee>? employees1 = context.Employees.Where(em => em.Salary > 55000).ToList();
+List<Employee>? employees2 = [.. context.Employees.Where(em => em.Salary > 55000)];
+
+=======================================================================
+
+// Any() and All()
+
+AppDbContext context = new();
+bool any1 = context.Employees.Any(); // if you found any row that matches the condition
+bool any2 = context.Employees.Any(em => em.Name == "Quincy Brown"); // if you found any row that matches the condition
+
+bool all1 = context.Employees.All(em => em.Name == "Quincy Brown"); // if all the rows matches the conditions
+bool all2 = context.Employees.All(em => em.EmployeeId > 0);
+
+=======================================================================
+
+// Append() and Prepend()
+// Done in client side
+// They don't used to add elements to the database.
+// They are just used to modify the output in your application.
+AppDbContext context = new();
+
+var employees = context.Employees
+.Where(x => x.Salary > 55000)
+.ToList()
+.Prepend(new Employee { Name = "Shahd Osama", Salary = 15500, Department = "HR" });
+
+=======================================================================
+
+AppDbContext context = new();
+
+// Average()
+decimal? avg = context.Employees.Where(x => x.Salary > 55000).Average(x => x.Salary);
+
+// Count()
+long count1 = context.Employees.LongCount();
+int count2 = context.Employees.Count();
+int count3 = context.Employees.Count(x => x.Salary > 55000);
+
+// Sum()
+var sum1 = context.Employees.Sum(x => x.Salary);
+var sum2 = context.Employees.Where(x => x.Salary > 55000).Sum(x => x.Salary);
+
+// Min() Max()
+var max = context.Employees.Max(x => x.Name);
+         
+=======================================================================
+
+// OrderBy() and OrderByDescending()
+List<Employee> employees = [.. context.Employees
+   .OrderBy(x => x.Name)
+   .ThenBy(x => x.Salary)
+   .ThenBy(x => x.Department)];
+
+=======================================================================
+
+// Selecting specific rows or parsing types and adding alias using Select()
+var employees = context.Employees
+   .Select(x => new { TheEmployeeName = x.Name})
+   .ToList();
+
+=======================================================================
+
+// Distinct() works on all columns, all columns must be identical
+// If you want to make it for specific columns use Select()
+var employees = context.Employees
+   .Select(x => new { x.Name })
+   .OrderBy(x => x.Name)
+   .Distinct()
+   .ToList();
+
+=======================================================================
+
+// Skip() and Take() used in pagination
+
+var employees1 = context.Employees.Skip(10).ToList();
+var employees2 = context.Employees.Take(10).ToList();
+var employees3 = context.Employees.Skip(10).Take(10).ToList();
+
+// application
+
+public static void Main(string[] args)
+{
+   List<Employee> pages = GetPageData(2, 20);
+   foreach (var page in pages)
+   {
+      Console.WriteLine(page.EmployeeId);
+   }
+
+}
+static List<Employee> GetPageData(int pageNum, int pageSize)
+{
+   AppDbContext context = new();
+   return [.. context.Employees.Skip((pageNum - 1) * pageSize).Take(pageSize)];
+}
+
+=======================================================================
+
+
+
+
+
+
+
+

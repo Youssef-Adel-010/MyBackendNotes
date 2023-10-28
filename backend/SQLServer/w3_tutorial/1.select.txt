@@ -1,0 +1,106 @@
+USE BikeStores;
+
+SELECT store_id, store_name
+FROM sales.stores;
+
+
+SELECT * FROM sales.stores;
+
+
+SELECT DISTINCT store_name FROM sales.stores;
+
+
+SELECT COUNT(DISTINCT store_name) FROM sales.stores;
+
+
+SELECT store_name
+FROM sales.stores
+WHERE store_name = 'max';
+
+-- (!= , <>)  → both means not equal
+
+
+SELECT COUNT(store_name)
+FROM sales.stores
+WHERE store_name != 'max';
+
+
+SELECT store_name
+FROM sales.stores
+WHERE store_id BETWEEN 10 AND 20;
+
+
+SELECT street
+FROM sales.stores
+WHERE street IN ('faisel', 'zamalek');
+
+
+SELECT email
+FROM sales.stores
+WHERE email LIKE 'a%';
+
+/*
+In the WHERE clause of an SQL query, several operators can be used to filter and specify conditions for retrieving data. Here is a list of commonly used operators in the WHERE clause:
+
+1. Comparison Operators:
+   - "=": Equal to
+   - "<>": Not equal to
+   - "<": Less than
+   - ">": Greater than
+   - "<=": Less than or equal to
+   - ">=": Greater than or equal to
+
+2. Logical Operators:
+   - "AND": Returns true if both conditions are true
+   - "OR": Returns true if at least one condition is true
+   - "NOT": Negates a condition
+
+3. Pattern Matching Operators:
+   - "LIKE": Matches a pattern using wildcard characters (% and _)
+   - "NOT LIKE": Does not match a pattern
+
+4. Set Operators:
+   - "IN": Matches any value in a specified list
+   - "NOT IN": Does not match any value in a specified list
+
+5. Range Operators:
+   - "BETWEEN": Matches a value within a specified range (inclusive)
+   - "NOT BETWEEN": Does not match a value within a specified range
+
+6. NULL Comparison Operators:
+   - "IS NULL": Matches NULL values
+   - "IS NOT NULL": Matches non-NULL values
+
+7. Other Operators:
+   - "EXISTS": Tests the existence of a subquery result
+   - "ALL": Compares a value to all values in a subquery result
+   - "ANY" or "SOME": Compares a value to at least one value in a subquery result
+
+These operators can be combined and nested within the WHERE clause to create complex conditions for data filtering in SQL queries.
+*/
+======================================================================================
+SELECT *
+FROM sales.stores
+ORDER BY store_name;
+
+
+SELECT *
+FROM sales.stores
+ORDER BY store_name ASC;
+
+SELECT *
+FROM sales.stores
+ORDER BY store_name DESC;
+
+
+SELECT *
+FROM sales.stores
+ORDER BY store_name, store_id;
+
+
+
+SELECT *
+FROM sales.stores
+ORDER BY store_name ASC, store_id DESC;
+
+

@@ -1,0 +1,23 @@
+Sequences:
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.HasSequence<int>("SequenceName");
+
+   modelBuilder.Entity<Post>()
+      .Property(x => x.SeqNum)
+      .HasDefaultValueSql("Next Value For SequenceName");
+}
+
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+   modelBuilder.HasSequence<int>("SequenceName")
+      .StartsAt(100)
+      .IncrementsBy(10);
+
+   modelBuilder.Entity<Post>()
+      .Property(x => x.SeqNum)
+      .HasDefaultValueSql("Next Value For SequenceName");
+}
+
+==============================================================================

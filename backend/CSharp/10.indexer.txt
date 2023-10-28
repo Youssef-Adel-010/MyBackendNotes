@@ -1,0 +1,47 @@
+→ why indexers? 
+  if you want to add indexing to the object itself like:
+  
+  Employee e = new Employee();
+  Console.WriteLine(e[0]);
+
+→ some applications are ip address and sudoku.
+
+→ string.Join(".", array);
+
+→ str.Split(".");
+
+======================================================================
+
+private int[] segments = new int[4];
+
+
+// indexing to the field
+public int this[int index]
+{
+   get
+   {
+      return segments[index];
+   }
+   set
+   {
+      segments[index] = value;
+   }
+}
+
+====================================================================== 
+
+default array elements value: 
+
+1. array of ref type (class) → 
+   MyClass[] myArray = new MyClass[5]; // All elements are initially null.
+
+2. array of val type (struct) →
+   int[] intArray = new int[5]; // All elements are initially 0
+   bool[] boolArray = new bool[3]; // All elements are initially false
+   char[] charArray = new char[4]; // All elements are initially '\0'
+
+
+3. custom value types to "structs" →
+   Point[] pointArray = new Point[2]; // All elements have X and Y set to 0
+
+======================================================================

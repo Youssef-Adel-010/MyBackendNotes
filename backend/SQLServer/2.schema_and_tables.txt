@@ -1,0 +1,99 @@
+-- schema → is a large container of some related relations, not necessary but is a plus
+-- dbo → database owner, default schema
+
+
+GO
+CREATE SCHEMA sales;
+GO
+CREATE SCHEMA production 
+-- AUTHORIZATION youssef;
+GO
+
+-----------------------------------------------------------------------------------------
+
+/*
+tables(relations):
+------------------
+CREATE TABLE [database_name.][schema_name.]table_name
+(
+	(column_name) (data_type) (constraint),
+	...
+	....
+	(table_constraints)
+);
+
+-- check the data type image.
+
+char(n) → fixed size string.
+varchar(n) → variable lengh string.
+text → for very huge string.
+
+n: 
+if you want to write numbers, n = 1 → 8000
+if you want more? n = max
+
+in numbers if you won't use the number value to any arithmetics, make it string.
+
+numeric datatype:
+numeric(all_digits, floating_digits)
+numeric(7, 2) → 25000.55
+or dicemal
+-----------------------------------------------------------------------------------------
+constraints:
+------------
+1- not null
+2- primary key → column that identifies the record, not nullable and can't be repeated.
+3- unique → nullable, can't be repeated.
+4- check(condition) → check the condition befor inserting.
+5- foreign key → nullable used to connect between tables to establishes the relation between them.
+
+
+foreign key → a column or a set of columns in a database table that establishes a link or relationship
+			  between two tables. It is used to enforce referential integrity in a relational database system.
+			  (check the foreign key image)
+*/
+CREATE TABLE sales.customers
+(
+	customer_id int primary key,    -- column level constraint
+	first_name varchar(15) not null,
+	last_name varchar(15) not null,
+	email varchar(50) not null,
+	phone varchar(11),
+	states varchar(15),
+	city varchar(15) not null,
+	street varchar(20) not null, 
+	zip_code varchar(5),
+	salary numeric(7, 2) not null check(salary between 5000 and 20000), -- you can only check on the same field
+
+	constraint customers_uq unique (phone, email),     -- table level constraint
+	constraint customers_ck check(salary between 5000 and 20000)
+);
+
+use sales
+CREATE TABLE store       -- parent
+(
+	store_id int primary key,
+	store_name varchar(10) not null, 
+	city varchar(15) not null, 
+	phone varchar(11) not null
+);
+CREATE TABLE staff       -- child
+(
+	staff_id int primary key,
+	first_name varchar(15) not null,
+	last_name varchar(15) not null,
+	salary numeric(7, 2) not null,
+	store_no int, -- create a column to make it the foreign key → no need for the same name, but must be the same datatype and size
+	constraint store_staff_fk foreign key (store_no) -- the column we made to be the foreign key
+	references store (store_id) -- the column we want to copy
+);
+
+
+CREATE TABLE orders 
+(
+	orders_id int primary key,
+	orders_name varchar(15) not null,
+	city varchar(15) not null,
+	store_no int references store(store_id)   -- short hand fk
+	
+);

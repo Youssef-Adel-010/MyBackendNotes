@@ -1,0 +1,24 @@
+primary expression → which will return a value
+void expression → which will not return a value
+assignment expression → '=' 
+======================================================
+string s1 = s1 ?? "any";  // ?? → null coalescing (checking if null) 
+
+string s3 = s1?.ToUppper();  // ? → null conditional (check if null rerturn null)
+
+this is the same statement:
+string s3 = s1 is null ? null : s1.ToUpper();
+======================================================
+Jump statements:
+[break, continue, goto, return]
+
+[goto]
+
+label:
+if(i <= 5)
+{
+    cw(i + " ");
+    i++;
+    goto label;
+}
+======================================================

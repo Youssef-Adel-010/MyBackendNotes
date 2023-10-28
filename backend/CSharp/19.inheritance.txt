@@ -1,0 +1,34 @@
+→ a class can inherit only from one class.
+=====================================================================================
+→ abstract class → is the class that you cannot make a object from it directly.
+→ abstract method → is the method that don't have a body, and must be implemented in the subclass.
+→ abstract methods or Properties can only be exist in abstract class or interface.
+→ sealed class → is the class you cannot inherit
+→ sealed member can't be overridden in the subclass
+=====================================================================================
+→ this → means the current class or object.
+→ base → means the base class.
+=====================================================================================
+polymorphism:
+-------------
+→ to make subclass able to modify or override a method in base class you must use [virtual] keyword in the base class, and use [override] in the subclass.
+→ overload → is to use the same name of method with different functionality.
+→ override → is to make a method in the subclass to work over the method in the base class.
+→ polymorphism is method overriding and method overloading together
+=====================================================================================
+[virtual] and [abstract] method:
+--------------------------------  
+→ abstract method don't have a body, must be implemented in the subclass.
+→ virtual method can have initial implementation.
+=====================================================================================
+→ inheritance and constructor:
+  if you have a constructor in the base class, you can't use when making an instance of the child, so:
+  you must make a constructor in the subclass and inherit from the base class, it will be something like this:
+  public Subclass(int value): base(value) { }
+=====================================================================================
+Object class → the ultimate base class for all .net types
+→ any class that not inherit from another, by default it inherits from the Object class.
+=====================================================================================
+Hiding inherited members → a base class and subclass can define identical members, then the subclass will hide the implementation of the parent.
+if you intended to hide, just ensure to add [new] keyword in the derived class.
+=====================================================================================

@@ -1,0 +1,25 @@
+Statement and Expression:
+-------------------------
+Expression is any Statement that:
+1. will return a value
+2. any method invocation
+3. any thing includes [new]
+==================================================================================
+Pure and Impure Functions:
+--------------------------
+any change on global variable make the Function Impure.
+
+Pure Function: the Function that don't make a side effect. 
+----------------------------------------------------------
+1. don't mutate global variables, only mutates local variables.
+3. don't mutate the value of the parameter (pass by ref).
+4. don't interact with outside world (any invocation of a built in method or others)
+5. easy to test, easy to understand.
+==================================================================================
+pure Function → prefer Declarative over imperative code
+Functional Programming → Programming Paradigm for developing software using Functions.
+pure Function is the key part of Functional Programming. 
+==================================================================================
+real power of Functional Programming is lambda and delegates
+Higher order Function → function that has a function as an argument or returns a function.
+most of Linq functions ar Higher order Functions. 

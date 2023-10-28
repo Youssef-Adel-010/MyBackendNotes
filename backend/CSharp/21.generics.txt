@@ -1,0 +1,49 @@
+→ why generics?
+when you want user to select the data type.
+================================================================================
+→ types of generic:
+1. g class
+2. g method
+================================================================================
+→ can I add constraints for the data type?
+------------------------------------------
+class GenericClass<T> where T : class 
+{
+    // must be reference type
+}
+
+class GenericClass<T> where T : new() 
+{
+    // must be reference type that uses new() [parameter less constructor][not string]
+}
+================================================================================
+→ <in T> and <out T>
+--------------------
+in delegates only:
+<in T> → means this T will be used as a parameter only.
+<out T> → means this T will be used as a return only.
+================================================================================
+→ Action, Func, Predicate → this is a built in generic delegates in c#.
+================================================================================
+→ Action:
+  1. 16 overload for parameter <in T1, in T2, in T3, ...., in T16>
+  2. don't return anything, just to point to the methods up to 16 parameters.
+
+  public static void Print(string s) => System.Console.WriteLine(s);
+  Action<string> action = Print;
+
+================================================================================
+→ Func
+  1. 17 overload, 1 for return and 16 for parameter <out T1, in T2, in T3, ...., in T17>.
+
+  public static int AnyMethod(int x, int y, int z) => x + y + z; 
+  Func<int, int, int, int> func = AnyMethod;
+
+================================================================================
+→ Predicate
+  1. takes one parameter and always return bool <int T>
+
+  private static bool AnyMethod(int x) => x > 10;
+  Predicate<int> func = AnyMethod;
+
+================================================================================
