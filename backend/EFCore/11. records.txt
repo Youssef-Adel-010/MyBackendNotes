@@ -1,0 +1,158 @@
+AppDbContext context = new();
+
+// Adding records
+Nationality nationality = new() { Name = "American" };
+context.Nationalities.Add(nationality);
+
+// Adding Range
+List<Nationality> nationalities =
+[
+   new() { Name = "Chinese"},
+   new() { Name = "Algerian" },
+   new() { Name = "Saudi" }
+];
+context.Nationalities.AddRange(nationalities);
+
+// Adding to related tables
+// !!! Must have navigation property !!!
+Author author = new()
+{
+   Name = "Jason",
+   Nationality = new Nationality { Name = "Spanish" }
+};
+
+// Inserting List for one to many relationship
+Blog blog = new()
+{
+   Url = "www.google.com",
+   AddedOn = DateTime.Now,
+Posts = new List<Post>
+{
+   new Post { Title = "t1" },
+   new Post { Title = "t2" },
+   new Post { Title = "t3" }
+   }
+};
+context.SaveChanges();
+
+=================================================================================
+
+public static void Main(string[] args)
+{
+   AppDbContext context = new();
+
+   // Updating data
+   // Method 1
+   Nationality? nationality1 = context.Nationalities.Find(0);
+   nationality1.Name = "Egyptian";
+
+   // Method 2
+   Nationality nationality2 = new() { Name = "Egyptian" };
+   context.Update(nationality2);
+   
+   // Method 3
+   Nationality nationality3 = new() { Name = "Egyptian" };
+   context.Entry(nationality1).CurrentValues.SetValues(nationality3);
+   
+   // Update specific columns or prevent some columns from updating
+   Book book = new() { Id = 2, Name = "hamada" };
+   context.Update(book); // here it will update the whole row
+   context.Entry(book).Property(b => b.Price).IsModified = false;
+   
+   // Update range
+   List<Book> books =
+   [
+      new Book() { Id = 1, Name = "updated book 1" },
+      new Book() { Id = 1, Name = "updated book 2" },
+      new Book() { Id = 1, Name = "updated book 3" },
+      new Book() { Id = 1, Name = "updated book 4" },
+   ];
+   context.UpdateRange(books);
+}
+
+=================================================================================
+
+/*
+   Deleting behavior:
+   1. Cascade → delete all children if the parent deleted (default behavior)
+   2. SetNul → set all child to null after parent deleted
+   3. Restrict → not delete the parent before child is deleted
+  modelBuilder.Entity<Book>()
+   .HasOne(x => x.AuthorId)
+   .WithMany()
+   .OnDeleteBehavior(DeleteBehavior.Restrict);  
+
+*/
+
+=================================================================================
+
+public static void Main(string[] args)
+{
+   AppDbContext context = new();
+   // Transactions
+   using var transaction = context.Database.BeginTransaction();
+   try
+   {
+      // you must add SaveChanges() after every query
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      
+      
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      transaction.Commit();
+   }
+   catch (Exception)
+   {
+      // Here you roll back all changes you did on database
+      transaction.Rollback();  
+   }
+   using var transaction = context.Database.BeginTransaction();
+   try
+   {
+      // you must add SaveChanges() after every query
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      transaction.CreateSavepoint("savePoint1");
+      context.Books.Add(new Book { Name = "Hamada" });
+      context.SaveChanges();
+      transaction.Commit();
+   }
+   catch (Exception)
+   {
+      // Here you roll back all changes you did on database
+      transaction.RollbackToSavepoint("savePoint1");  
+      // add any logic you have here..
+   }
+   
+   
+}
+
+=================================================================================
+
+AppDbContext context = new();
+
+// MinBy() and MaxBy()
+Book? maxBook = context.Books.MinBy(x => x.Price);   
+
+Book? minBook = context.Books.MaxBy(x => x.Price);
+
+=================================================================================
+
+// EfCore 7
+// ExecuteDelete()
+var book1 = context.Books.Where(x => x.Id > 5).ExecuteDelete();   
+System.Console.WriteLine(book1);     // 3
+
+// ExecuteUpdate()
+var book2 = context.Books
+   .Where(x => x.Id > 5)
+.ExecuteUpdate(x => x.SetProperty(x => x.Name, x => "hamada"));
+
+=================================================================================

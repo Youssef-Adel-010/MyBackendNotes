@@ -1,0 +1,171 @@
+Tracking and No Tracking
+
+Tracking → (default) means if you made a modification on your database 
+it tracks all  the changes and add it on database by saying
+.SaveChanges()
+
+================================================================================
+
+// Change tracking state
+AppDbContext context = new();
+var book = context.Books.AsNoTracking().SingleOrDefault(b => b.Id == 1);
+
+// or
+AppDbContext context = new();
+context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+var book = context.Books.SingleOrDefault(b => b.Id == 1);
+
+--------------------------------------------------------------------------------
+
+AppDbContext context = new();
+var book = context.Books.SingleOrDefault(b => b.Id == 1);
+book.Price = 10;
+var trackers = context.ChangeTracker.Entries();
+
+foreach (var tracker in trackers)
+{
+   Console.WriteLine($"{tracker.Entity} -> {tracker.State}");
+}
+context.SaveChanges();
+// EntityFrameworkCore.Book -> Unchanged
+// EntityFrameworkCore.Book -> Modified
+
+================================================================================
+
+Eager Loading → Loads all the data on one query
+- take care it ruins the performance
+
+
+AppDbContext context = new();
+var book = context.Books.SingleOrDefault(b => b.Id == 1);   
+book.Author.Name(); // null reference exception
+
+var book = context.Books
+   .Include(Author)
+   .SingleOrDefault(b => b.Id == 1);   
+         
+book.Author.Name(); // will work
+
+var book = context.Books
+   .Include(b => b.Author)
+   .ThenInclude(a => a.Nationality)
+   .SingleOrDefault(b => b.Id == 1);
+
+book.Author.Name(); // will work
+
+================================================================================
+
+Explicit Loading 
+
+AppDbContext context = new();
+If Navigation Property
+var book = context.Books.SingleOrDefault(b => b.Id == 2);
+context.Entry(book).Reference(b => b.Author).Load();
+
+
+If Navigation List
+var blog = context.Blogs.SingleOrDefault(b => b.BlogId == 5);
+context.Entry(Blog).Collection(b => b.Posts).Load(); 
+
+You can make query on related data
+context.Entry(Blog)
+   .Collection(b => b.Posts)
+   .Query()
+   .Where(x => .PostId > 2)
+   .ToList();
+
+================================================================================
+
+Lazy Loading → Loads the data after calling the Navigation Property in different queries.
+How to use Lazy Loading??
+
+1. add package Microsoft.EntityFrameworkCore.Proxies
+
+2. go to AppDbContext after 
+   optionsBuilder.UseLazyLoadingProxies().UseSqlServer(conStr);
+
+3. all Navigation Properties must be virtual
+
+AppDbContext context = new();
+var book = context.Books.Single(x => x.Id == 1); // query 1
+
+Console.WriteLine(book.Author.Name); // query 2
+
+================================================================================
+
+Single query and splitting queries:
+- By default efcore make a single query not divided queries.
+- This works only with Include(), it means with Eager Loading only.
+// Here it will be done in one query using join
+AppDbContext context = new();
+var book = context.Books.Include(x => x.Author).Single(x => x.Id == 1); 
+
+// Splitting queries
+AppDbContext context = new();
+var book = context.Books.Include(x => x.AuthorId).AsSplitQuery().Single(x => x.Id == 1);
+
+// Setting as default
+// Go to AppDbContext → OnConfiguring() 
+optionsBuilder.UseLazyLoadingProxies().UseSqlServer(conStr, x => x.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery));
+
+================================================================================
+
+// Using Linq to query data.
+// Here the query is IQueryable, didn't applied on the database yes
+var books1 = from b in context.Books
+             join a in context.Authors
+             on b.AuthorId equals a.Id
+             select new
+             {
+                BookId = b.Id,
+                BookName = b.Name,
+                AuthorName = a.Name
+             };
+
+// applying on the database
+var books2 = (from b in context.Books
+              join a in context.Authors
+              on b.AuthorId equals a.Id
+              select new
+              {
+                 BookId = b.Id,
+                 BookName = b.Name,
+                 AuthorName = a.Name
+              }).ToList();
+
+================================================================================
+
+// Select using sql statement
+AppDbContext context = new();
+List<Book> books1 = [.. context.Books.FromSqlRaw("Select * From Books")];
+
+// Select using stored procedure
+var books2 = context.Books.FromSqlRaw("Stored Procedure Name");
+         
+// Select using stored procedure with parameter
+// var books3 = context.Books.FromSqlRaw($"Stored Procedure Name {parameter_name}");
+
+// or
+var bookId = new SqlParameter("Id", 1);
+var books4 = context.Books.FromSqlRaw($"Stored Procedure Name @bookId", bookId);
+
+// what if procedure uses more than one table
+// Here we use the Dto (Data Transfer Object)
+// means it is a class that has the shape of the data returned from the database 
+// Make a folder Dto and add Dto then make a DbSet for the class and use it
+// But take care that the AppDbContext will make a class, so declare it as a view
+// go to OnModelCreate() → modelBuilder.Entity<BookDto>(e => { e.HasNoKey().ToView(null); });
+var books5 = context.BookDto.FromSqlRaw($"Stored Procedure Name @bookId", bookId);
+
+================================================================================
+
+// To make a global filter for all queries done on the table
+// got to OnModelCreating()
+// you can also add filter on Navigation Properties
+
+modelBuilder.Entity<Book>().HasQueryFilter(x => x.Price != 0);
+
+// Ignoring query filters
+var books1 = context.Books.IgnoreQueryFilters().Select(x => x.Price > 1000).ToList();
+
+================================================================================
